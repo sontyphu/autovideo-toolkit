@@ -13,7 +13,7 @@ Ra:
 
 Dung:
     python helpers/lam_thumbnail.py video.mp4 -d ra/
-    python helpers/lam_thumbnail.py video.mp4 -d ra/ --chu "LỜI CẢM ƠN" --gu xuong-video-ai
+    python helpers/lam_thumbnail.py video.mp4 -d ra/ --chu "LỜI CẢM ƠN" --gu mac-dinh
     python helpers/lam_thumbnail.py video.mp4 -d ra/ --so-ung-vien 12 --khong-mat-nguoi
 """
 
@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -117,7 +118,9 @@ def nap_gu(ten_gu: str | None) -> dict:
     }
     if not ten_gu:
         return mac_dinh
-    kho = Path.home() / "Documents" / "Obsidian Vault" / "Son's Brain" / ".claude" / "kho-gu"
+    # Kho gu nam trong chinh bo cong cu (thu muc `kho-gu/`).
+    # Muon de cho khac thi dat bien moi truong KHO_GU tro toi thu muc do.
+    kho = Path(os.environ.get("KHO_GU") or (Path(__file__).resolve().parent.parent / "kho-gu"))
     for thu in (kho / "san-pham" / f"{ten_gu}.json", kho / f"{ten_gu}.json"):
         if thu.exists():
             g = json.loads(thu.read_text(encoding="utf-8"))

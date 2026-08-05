@@ -3,10 +3,10 @@
 Thay cho lenh `npx hyperframes transcribe --model small.en` (Whisper noi bo):
   - May anh Son KHONG co whisper-cpp -> lenh goc bao "whisper_unavailable".
   - Model `small.en` la model TIENG ANH -> doc tieng Viet sai be bet.
-  - Scribe la chuan boc bang cua vault, tieng Viet chuan.
+  - Scribe boc tieng Viet chuan nhat trong cac dich vu da thu.
 
 Dinh dang xuat: mang PHANG cac tu [{"text": ..., "start": ..., "end": ...}, ...]
-(dung hop dong o SKILL.md talking-head-recut buoc 4-5: khong co "segments",
+(dung hop dong cua bo chen do hoa buoc 4-5: khong co "segments",
 khong boc trong "words").
 
 Moc gio cuoi duoc CLAMP theo do dai media that (tranh duoi den khi render).

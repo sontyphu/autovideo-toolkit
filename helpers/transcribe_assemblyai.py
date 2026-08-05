@@ -18,7 +18,7 @@ so pack_transcripts.py, timeline_view.py, and extract_transcript.py all
 work unmodified.
 
 KNOWN LIMITATIONS vs ElevenLabs Scribe (measured 01/08/2026 on a real
-Vietnamese lecture segment - see wiki/research):
+Vietnamese lecture segment):
   - Vietnamese accuracy is clearly below Scribe: proper nouns and
     English terms mixed into Vietnamese speech get mangled
     ("ChatGPT" -> "Chativity", "prompt" -> "Chrome", "random" -> "giam dung").
@@ -125,7 +125,7 @@ def call_assemblyai(
 
 def to_scribe_schema(aai_json: dict) -> dict:
     """Convert AssemblyAI's response (word timestamps in milliseconds) into the
-    Scribe-shaped schema the rest of video-use's helpers expect."""
+    Scribe-shaped schema the rest of the toolkit helpers expect."""
     words: list[dict] = []
     prev_end = 0.0
     for w in aai_json.get("words") or []:

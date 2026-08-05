@@ -30,7 +30,7 @@ Lệnh này chép sẵn bộ chữ tiếng Việt và thư viện chuyển độ
 |---|---|---|---|
 | **4** | **Video ra CÂM hoàn toàn** | Thẻ `<audio>` thiếu `id`, máy không thấy để trộn tiếng | Mỗi thẻ tiếng phải có `id` riêng: `<audio id="giong-doc" ...>` |
 | **5** | Hai đường tiếng chồng nhau, méo | Hai thẻ tiếng đặt cùng một số lớp | Mỗi đường một `data-track-index` khác nhau |
-| **10** | Bóc chữ báo `whisper_unavailable`, tắc ở bước 4 | Quy trình gốc gọi Whisper mà máy không có; model gốc lại là model **tiếng Anh** | **Dùng skill `chen-do-hoa-video`** (bản tiếng Việt của anh Sơn) thay cho `talking-head-recut`. Nó đã vá sẵn sang Scribe |
+| **10** | Bóc chữ báo `whisper_unavailable`, tắc ở bước 4 | Quy trình gốc gọi Whisper mà máy không có; model gốc lại là model **tiếng Anh** | Dùng `helpers/transcript_hyperframes.py` trong bộ này - nó bóc bằng ElevenLabs Scribe (chuẩn tiếng Việt) rồi xuất đúng định dạng bộ chèn đồ họa cần |
 
 ### Nhóm 3 - Nhân bản hàng loạt (lỗi 6-7)
 
@@ -44,7 +44,7 @@ Lệnh này chép sẵn bộ chữ tiếng Việt và thư viện chuyển độ
 
 | # | Hiện tượng | Vì sao | Cách né |
 |---|---|---|---|
-| **11** | Báo không nhận lệnh `python` | Python trên máy là bản rỗng của Windows Store | Dùng Python xách tay: `~\.claude\skills\video-use\.venv\Scripts\python.exe` |
+| **11** | Báo không nhận lệnh `python` | Python trên máy là bản rỗng của Windows Store | Dùng Python xách tay: `~\.claude\skillsutovideo-toolkit.venv\Scripts\python.exe` |
 | **12** | Dựng giữa chừng báo hết chỗ trống | Ổ C đầy, chỗ chứa ảnh tạm nằm ở ổ C | Đặt biến `HYPERFRAMES_EXTRACT_CACHE_DIR` trỏ sang ổ khác |
 
 ### Nhóm 5 - Lỗi máy KHÔNG bắt được (lỗi 9)
@@ -71,25 +71,11 @@ Lệnh này chép sẵn bộ chữ tiếng Việt và thư viện chuyển độ
 
 Máy: card GT 1030. Máy khỏe hơn sẽ nhanh hơn.
 
-## Vì sao có skill riêng `chen-do-hoa-video`
+## Cảnh báo: đừng để công cụ tự cập nhật
 
-Skill gốc `talking-head-recut` của HeyGen **tự ghi đè mọi bản vá**. Ở dòng đầu file
-nó bắt trợ lý chạy `hyperframes skills update` im lặng mỗi lần dùng, nên bản vá
-sống không quá một lần chạy - **đã kiểm chứng 02/08: vá xong dùng một lần là mất**.
+Một số bộ chèn đồ họa có dòng lệnh **tự cập nhật im lặng** ở đầu file hướng dẫn.
+Chạy nó là **mọi chỉnh sửa tiếng Việt bạn vá vào sẽ bị ghi đè sạch** - đã gặp thật
+ngày 02/08/2026, vá xong dùng một lần là mất.
 
-Nên anh Sơn có **bản riêng**: `.claude/skills/chen-do-hoa-video`, đã vá 3 chỗ:
-
-1. Bước 4 bóc chữ: Whisper `small.en` → **ElevenLabs Scribe** (`--language vie`)
-2. **Bỏ lệnh tự cập nhật** ở đầu file
-3. Ghi rõ đường dẫn Python xách tay
-
-**Luật dùng:**
-
-| Video | Dùng skill nào |
-|---|---|
-| Tiếng Việt (hầu hết việc của anh) | **`chen-do-hoa-video`** |
-| Tiếng Anh, muốn bản mới nhất của hãng | `talking-head-recut` (bản gốc, vẫn để nguyên) |
-
-⛔ **Đừng chạy `npx hyperframes skills update` lên thư mục `chen-do-hoa-video`** - sẽ mất bản vá.
-
-Hãng ra bản mới đáng giá thì: chép lại từ bản gốc → vá lại đúng 3 chỗ trên.
+Cách né: sau khi cài, mở file hướng dẫn của bộ đó ra, **xóa dòng lệnh tự cập nhật**.
+Muốn lên bản mới thì cập nhật có chủ đích rồi vá lại, đừng để nó tự đổi dưới chân.

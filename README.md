@@ -58,10 +58,10 @@ Bước này tải khá nhiều, mất 2-5 phút. Cứ để nó chạy xong.
 
 ```
 mkdir "$env:USERPROFILE\.claude\skills" -Force
-Copy-Item "$env:USERPROFILE\autovideo-toolkit" "$env:USERPROFILE\.claude\skills\video-use" -Recurse -Force
+Copy-Item "$env:USERPROFILE\autovideo-toolkit" "$env:USERPROFILE\.claude\skills\autovideo-toolkit" -Recurse -Force
 ```
 
-*(Mac: `mkdir -p ~/.claude/skills && cp -R ~/autovideo-toolkit ~/.claude/skills/video-use`)*
+*(Mac: `mkdir -p ~/.claude/skills && cp -R ~/autovideo-toolkit ~/.claude/skills/autovideo-toolkit`)*
 
 ---
 
@@ -74,10 +74,10 @@ Bộ công cụ cần chìa khóa ElevenLabs để bóc lời nói trong video t
 3. Chạy lệnh dưới, thay `DAN_KEY_VAO_DAY` bằng chuỗi vừa copy:
 
 ```
-"ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY" | Out-File -FilePath "$env:USERPROFILE\.claude\skills\video-use\.env" -Encoding utf8 -NoNewline
+"ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY" | Out-File -FilePath "$env:USERPROFILE\.claude\skills\autovideo-toolkit\.env" -Encoding utf8 -NoNewline
 ```
 
-*(Mac: `echo "ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY" > ~/.claude/skills/video-use/.env`)*
+*(Mac: `echo "ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY" > ~/.claude/skills/autovideo-toolkit/.env`)*
 
 ⚠️ **Không gửi chuỗi này cho ai, không chụp màn hình đưa lên nhóm.** Ai có nó là tiêu tiền được trong tài khoản bạn.
 
@@ -86,13 +86,13 @@ Bộ công cụ cần chìa khóa ElevenLabs để bóc lời nói trong video t
 ## Kiểm tra đã chạy được chưa
 
 ```
-cd $env:USERPROFILE\.claude\skills\video-use
+cd $env:USERPROFILE\.claude\skills\autovideo-toolkit
 uv run helpers/timeline_view.py --help
 ```
 
 Hiện ra bảng hướng dẫn là đạt.
 
-Rồi mở Claude Code, gõ: *bạn có skill video-use không* - trợ lý nhận diện được là xong.
+Rồi mở Claude Code, gõ: *bạn có skill autovideo-toolkit không* - trợ lý nhận diện được là xong.
 
 ---
 
@@ -119,6 +119,8 @@ Chưa làm thì xem hướng dẫn chuẩn bị: https://sontyphu.github.io/hoc-
 
 ## Bản quyền
 
-Bộ công cụ lõi là phần mềm mã nguồn mở **video-use** của Browser Use, giấy phép MIT - xem file `LICENSE`. Bản này bổ sung phần tiếng Việt và các công cụ trợ giúp do Lê Thanh Sơn viết thêm, phát cho học viên lớp Autovideo.
+Bộ **Autovideo Toolkit** do **Lê Thanh Sơn** đóng gói và phát cho học viên lớp Autovideo: phần bóc băng tiếng Việt, tải video từ link, bộ khởi động chữ tiếng Việt và các công cụ trợ giúp đều do anh viết thêm.
 
-Kho gốc: https://github.com/browser-use/video-use
+Phần lõi xử lý video dựng trên một thư viện mã nguồn mở giấy phép MIT - giấy phép này cho phép đóng gói lại và phát hành, đổi lại phải giữ nguyên file `LICENSE`. Đó là lý do file đó có mặt trong bộ này.
+
+

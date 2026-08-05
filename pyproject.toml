@@ -1,7 +1,7 @@
 [project]
-name = "video-use"
+name = "autovideo-toolkit"
 version = "0.1.0"
-description = "Conversation-driven video editor skill for Claude Code"
+description = "Xuong Video AI - bo cong cu hau ky video cua Le Thanh Son"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
 dependencies = [

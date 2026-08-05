@@ -114,7 +114,7 @@ def call_groq(
 
 def to_scribe_schema(groq_json: dict, model: str) -> dict:
     """Convert Groq's OpenAI-style verbose_json into the Scribe-shaped schema
-    the rest of video-use's helpers expect: words[] with
+    the rest of the toolkit helpers expect: words[] with
     type/text/start/end/speaker_id, plus synthetic 'spacing' entries so
     pack_transcripts.py's silence-gap detection keeps working.
     """

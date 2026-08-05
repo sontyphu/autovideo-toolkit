@@ -3,7 +3,7 @@
 Nhan danh sach diem cat (tu tim_tu_dem.py, da loc nhung cho nguoi dung TICH CHON)
 roi cat bo dung nhung cho do.
 
-Lam dung luat cua video-use:
+Lam dung luat cua bo cong cu:
   - Cat tung doan roi ghep KHONG ma hoa lai (-c copy) -> khong giam chat luong
   - Mo/tat tieng 30ms o moi bien -> khong "pop" tai cho noi
   - Chua dem 2 dau moi doan cat -> moc gio boc chu lech 50-100ms, dem se hut

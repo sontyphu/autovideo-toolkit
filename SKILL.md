@@ -1,9 +1,9 @@
 ---
-name: video-use
+name: autovideo-toolkit
 description: Edit any video by conversation. Transcribe, cut, color grade, generate overlay animations, burn subtitles — for talking heads, montages, tutorials, travel, interviews. No presets, no menus. Ask questions, confirm the plan, execute, iterate, persist. Production-correctness rules are hard; everything else is artistic freedom.
 ---
 
-# Video Use
+# Autovideo Toolkit - Xuong Video AI (Le Thanh Son)
 
 ## Principle
 
@@ -30,7 +30,7 @@ These are the things where deviation produces silent failures or broken output. 
 9. **Cache transcripts per source.** Never re-transcribe unless the source file itself changed.
 10. **Parallel sub-agents for multiple animations.** Never sequential. Spawn N at once via the `Agent` tool; total wall time ≈ slowest one.
 11. **Strategy confirmation before execution.** Never touch the cut until the user has approved the plain-English plan.
-12. **All session outputs in `<videos_dir>/edit/`.** Never write inside the `video-use/` project directory.
+12. **All session outputs in `<videos_dir>/edit/`.** Never write inside the `autovideo-toolkit/` project directory.
 13. **Free-tier transcripts require a correction pass before use.** Transcripts from `transcribe_assemblyai.py` or `transcribe_groq.py` (fallbacks when ElevenLabs Scribe is unavailable) mishear proper nouns and English terms mixed into Vietnamese speech (measured 01/08/2026: "Bếp Tôm"→"Webtoon", "prompt"→"Chrome"). Before the transcript drives any cut or content decision: (a) pass known proper nouns via `--keyterms` when transcribing with AssemblyAI; (b) review the text against context and fix misheard words, asking the user when unsure; (c) fix display text only — never alter word timestamps, cuts snap to the original ones. Scribe transcripts skip this rule.
 14. **AssemblyAI always runs its best available model.** Owner's standing rule (01/08/2026). Currently `speech_models: ["universal-3-5-pro", "universal-2"]` — universal-3-5-pro is the only top-tier model that accepts Vietnamese (universal-3-pro silently downgrades to universal-2 for vi). When AssemblyAI releases a newer top model, upgrade the list in `transcribe_assemblyai.py` and re-verify Vietnamese accuracy against a Scribe transcript of the same real segment before trusting it.
 
@@ -38,7 +38,7 @@ Everything else in this document is a worked example. Deviate whenever the mater
 
 ## Directory layout
 
-The skill lives in `video-use/`. User footage lives wherever they put it. All session outputs go into `<videos_dir>/edit/`.
+The skill lives in `autovideo-toolkit/`. User footage lives wherever they put it. All session outputs go into `<videos_dir>/edit/`.
 
 ```
 <videos_dir>/
@@ -59,17 +59,17 @@ The skill lives in `video-use/`. User footage lives wherever they put it. All se
 
 ## Setup
 
-First-time install lives in `install.md` (clone, deps, ffmpeg, skill registration, API key). Don't re-run it every session; on cold start just verify:
+First-time install lives in `README.md` (clone, deps, ffmpeg, skill registration, API key). Do not re-run it every session; on cold start just verify:
 
-- `ELEVENLABS_API_KEY` resolves — either in the environment or in `.env` at the video-use repo root. If missing, ask the user to paste one and write it to `.env` (never to the user's `<videos_dir>`).
+- `ELEVENLABS_API_KEY` resolves — either in the environment or in `.env` at the toolkit repo root. If missing, ask the user to paste one and write it to `.env` (never to the user's `<videos_dir>`).
 - `ffmpeg` + `ffprobe` on PATH.
 - Python deps installed (`uv sync` or `pip install -e .` inside the repo).
 - Node.js + npm available if the session needs HyperFrames or Remotion slots. HyperFrames currently requires Node.js 22+.
 - `yt-dlp`, HyperFrames, Remotion, Manim installed only on first use.
-- First-use animation setup happens inside the slot directory, never at the video-use repo root. HyperFrames can be invoked with `npx --yes hyperframes ...`; Remotion can be scaffolded with `npx create-video@latest` or installed as a project-local dependency before using its `remotion render` command.
+- First-use animation setup happens inside the slot directory, never at the toolkit repo root. HyperFrames can be invoked with `npx --yes hyperframes ...`; Remotion can be scaffolded with `npx create-video@latest` or installed as a project-local dependency before using its `remotion render` command.
 - This skill vendors `skills/manim-video/`. Read its SKILL.md when building a Manim slot.
 
-Helpers (`helpers/transcribe.py`, `helpers/render.py`, etc.) live alongside this SKILL.md. Resolve their paths relative to the directory containing this file — the skill is typically symlinked at `~/.claude/skills/video-use/` or `~/.codex/skills/video-use/`.
+Helpers (`helpers/transcribe.py`, `helpers/render.py`, etc.) live alongside this SKILL.md. Resolve their paths relative to the directory containing this file — the skill is typically symlinked at `~/.claude/skills/autovideo-toolkit/` or `~/.codex/skills/autovideo-toolkit/`.
 
 ## Helpers
 
