@@ -6,7 +6,29 @@ Bộ đồ nghề để trợ lý AI **nghe được lời** và **nhìn đượ
 
 ---
 
-## Cài đặt - 4 bước
+## Cài đặt - dán 1 dòng, máy tự làm hết
+
+Mở **PowerShell** (Windows), dán dòng này rồi bấm Enter:
+
+```
+irm https://raw.githubusercontent.com/sontyphu/autovideo-toolkit/main/cai-dat.ps1 | iex
+```
+
+**Máy Mac** - mở Terminal, dán dòng này:
+
+```
+curl -fsSL https://raw.githubusercontent.com/sontyphu/autovideo-toolkit/main/cai-dat.sh | bash
+```
+
+Máy sẽ tự: kiểm đồ nền → cài FFmpeg nếu thiếu → cài uv → tải bộ công cụ → nạp vào trợ lý → chấm điểm 4 mục và báo rõ còn thiếu gì. Mất khoảng 3-6 phút tùy mạng.
+
+**Chạy lại được nhiều lần** - lỡ đứt giữa chừng thì cứ dán lại dòng đó, nó tự dọn rồi làm tiếp. Chìa khóa ElevenLabs đã nhập thì được giữ nguyên, không phải nhập lại.
+
+Xong rồi **đóng hẳn PowerShell mở lại**, mở Claude Code gõ: *bạn có skill autovideo-toolkit không*.
+
+---
+
+## Cài bằng tay - nếu thích tự làm từng bước
 
 Mở **PowerShell** (Mac: Terminal). Gõ xong mỗi lệnh bấm Enter.
 
