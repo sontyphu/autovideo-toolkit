@@ -7,6 +7,16 @@ $KHO   = "https://github.com/sontyphu/autovideo-toolkit"
 $DICH  = Join-Path $env:USERPROFILE "autovideo-toolkit"
 $SKILL = Join-Path $env:USERPROFILE ".claude\skills\autovideo-toolkit"
 
+# PowerShell 5.1 coi moi dong stderr cua lenh ngoai la LOI. uv/git in tien trinh
+# ra stderr nen phai chay chung trong che do "Continue" roi tu kiem ma tra ve.
+function Chay-Ngoai {
+    param([scriptblock]$Lenh)
+    $cu = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try { & $Lenh 2>&1 | Out-Null; return $LASTEXITCODE }
+    finally { $ErrorActionPreference = $cu }
+}
+
 function Tieu-De($chu) { Write-Host "`n=== $chu ===" -ForegroundColor Cyan }
 function Dat($chu)     { Write-Host "  [DAT] $chu" -ForegroundColor Green }
 function Thieu($chu)   { Write-Host "  [THIEU] $chu" -ForegroundColor Yellow }
@@ -68,7 +78,7 @@ if (Co-Lenh uv) {
     Dat "uv da co: $(uv --version)"
 } else {
     Write-Host "  Dang cai uv..."
-    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex" | Out-Null
+    Chay-Ngoai { powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex" } | Out-Null
     $uvBin = Join-Path $env:USERPROFILE ".local\bin"
     if (Test-Path $uvBin) { $env:PATH = "$env:PATH;$uvBin" }
     if (Co-Lenh uv) { Dat "uv da cai" } else { Hong "uv cai xong ma may chua nhan - dong PowerShell mo lai roi chay lai lenh nay"; return }
@@ -80,19 +90,21 @@ Tieu-De "Buoc 4/5 - Tai bo cong cu ve may"
 if (Test-Path (Join-Path $DICH ".git")) {
     Write-Host "  Da co san, dang lay ban moi nhat..."
     Push-Location $DICH
-    git pull --quiet 2>&1 | Out-Null
+    Chay-Ngoai { git pull --quiet } | Out-Null
     Pop-Location
     Dat "Da cap nhat: $DICH"
 } else {
     if (Test-Path $DICH) { Remove-Item $DICH -Recurse -Force }
-    git clone --quiet $KHO $DICH 2>&1 | Out-Null
+    $maClone = Chay-Ngoai { git clone --quiet $KHO $DICH }
+    if ($maClone -ne 0) { Hong "Tai ve that bai - kiem lai mang roi chay lai lenh nay"; return }
     Dat "Da tai ve: $DICH"
 }
 
 Write-Host "  Dang cai cac thu no can (2-5 phut, cu de chay)..."
 Push-Location $DICH
-uv sync 2>&1 | Out-Null
+$maSync = Chay-Ngoai { uv sync }
 Pop-Location
+if ($maSync -ne 0) { Hong "Cai dat ben trong that bai - chup man hinh gui nhom Zalo lop"; return }
 Dat "Xong phan cai dat ben trong"
 
 # ---------------------------------------------------------------- 5. Nap vao tro ly
