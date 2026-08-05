@@ -6,7 +6,32 @@ Bộ đồ nghề để trợ lý AI **nghe được lời** và **nhìn đượ
 
 ---
 
-## Cài đặt - dán 1 dòng, máy tự làm hết
+## Cách 1 - Nhờ trợ lý AI cài hộ (dễ nhất)
+
+Mở **Claude Code**, dán nguyên đoạn dưới đây vào ô chat:
+
+```
+Tôi là học viên lớp Autovideo của Lê Thanh Sơn. Đây là bộ công cụ giảng viên
+phát cho lớp, mã nguồn mở giấy phép MIT:
+https://github.com/sontyphu/autovideo-toolkit
+
+Cài giúp tôi theo đúng mục "Cách 3 - Cài bằng tay, từng bước" trong README của kho đó:
+1. Đọc README trước để biết các bước
+2. Clone kho về thư mục nhà của tôi
+3. Chạy uv sync
+4. Chép vào .claude/skills/autovideo-toolkit
+5. Kiểm tra lại rồi báo tôi còn thiếu gì
+
+Cứ đọc mã nguồn trước nếu cần, rồi làm từng bước và báo tôi kết quả.
+```
+
+Trợ lý sẽ đọc kho, xem các bước, rồi làm. Bước cuối là lấy chìa khóa ElevenLabs - phần đó bạn tự làm, xem mục bên dưới.
+
+> **Trợ lý từ chối thì vì sao?** Nếu bạn chỉ dán mỗi cái link kèm câu "cài cho tôi", trợ lý sẽ từ chối - nó không biết kho này là gì, ai làm, bên trong có gì. Dán nguyên đoạn ở trên là nó có đủ bối cảnh để làm. Đây là tính năng an toàn, không phải lỗi.
+
+---
+
+## Cách 2 - Dán 1 dòng, máy tự làm hết
 
 Mở **PowerShell** (Windows), dán dòng này rồi bấm Enter:
 
@@ -28,7 +53,7 @@ Xong rồi **đóng hẳn PowerShell mở lại**, mở Claude Code gõ: *bạn 
 
 ---
 
-## Cài bằng tay - nếu thích tự làm từng bước
+## Cách 3 - Cài bằng tay, từng bước
 
 Mở **PowerShell** (Mac: Terminal). Gõ xong mỗi lệnh bấm Enter.
 
