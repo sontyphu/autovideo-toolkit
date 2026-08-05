@@ -103,6 +103,16 @@ if (Test-Path (Join-Path $DICH ".git")) {
 Write-Host "  Dang cai cac thu no can (2-5 phut, cu de chay)..."
 Push-Location $DICH
 $maSync = Chay-Ngoai { uv sync }
+
+# Lan cai truoc bi dut giua chung se de lai thu muc .venv hong. uv tu choi dung
+# no va bao loi kho hieu -> don sach roi lam lai mot lan nua.
+if ($maSync -ne 0) {
+    Write-Host "  Lan truoc cai do dang, dang don sach roi lam lai..." -ForegroundColor Yellow
+    $venv = Join-Path $DICH ".venv"
+    if (Test-Path $venv) { Remove-Item $venv -Recurse -Force -ErrorAction SilentlyContinue }
+    $maSync = Chay-Ngoai { uv sync }
+}
+
 Pop-Location
 if ($maSync -ne 0) { Hong "Cai dat ben trong that bai - chup man hinh gui nhom Zalo lop"; return }
 Dat "Xong phan cai dat ben trong"

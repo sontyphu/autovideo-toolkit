@@ -56,7 +56,15 @@ else
 fi
 
 echo "  Dang cai cac thu no can (2-5 phut, cu de chay)..."
-(cd "$DICH" && uv sync >/dev/null 2>&1)
+if ! (cd "$DICH" && uv sync >/dev/null 2>&1); then
+  # Lan cai truoc bi dut giua chung se de lai .venv hong -> don sach lam lai
+  echo "  Lan truoc cai do dang, dang don sach roi lam lai..."
+  rm -rf "$DICH/.venv"
+  if ! (cd "$DICH" && uv sync >/dev/null 2>&1); then
+    hong "Cai dat ben trong that bai - chup man hinh gui nhom Zalo lop"
+    exit 1
+  fi
+fi
 dat "Xong phan cai dat ben trong"
 
 # ---------------------------------------------------------------- 5. Nap vao tro ly
