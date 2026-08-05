@@ -40,7 +40,7 @@ Cài xong **đóng hẳn PowerShell rồi mở lại**.
 
 ```
 cd $env:USERPROFILE
-git clone https://github.com/sontyphu/xuong-video-ai
+git clone https://github.com/sontyphu/autovideo-toolkit
 ```
 
 *(Mac: `cd ~` rồi cùng lệnh `git clone`)*
@@ -48,7 +48,7 @@ git clone https://github.com/sontyphu/xuong-video-ai
 ### Bước 3 - Cài các thứ nó cần
 
 ```
-cd xuong-video-ai
+cd autovideo-toolkit
 uv sync
 ```
 
@@ -58,10 +58,10 @@ Bước này tải khá nhiều, mất 2-5 phút. Cứ để nó chạy xong.
 
 ```
 mkdir "$env:USERPROFILE\.claude\skills" -Force
-Copy-Item "$env:USERPROFILE\xuong-video-ai" "$env:USERPROFILE\.claude\skills\video-use" -Recurse -Force
+Copy-Item "$env:USERPROFILE\autovideo-toolkit" "$env:USERPROFILE\.claude\skills\video-use" -Recurse -Force
 ```
 
-*(Mac: `mkdir -p ~/.claude/skills && cp -R ~/xuong-video-ai ~/.claude/skills/video-use`)*
+*(Mac: `mkdir -p ~/.claude/skills && cp -R ~/autovideo-toolkit ~/.claude/skills/video-use`)*
 
 ---
 
