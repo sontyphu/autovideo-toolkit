@@ -170,9 +170,28 @@ $envCu  = Join-Path $SKILL_CU ".env"
 if (Test-Path $envMoi)      { $giuEnv = Get-Content $envMoi -Raw }
 elseif (Test-Path $envCu)   { $giuEnv = Get-Content $envCu -Raw; Dat "Tim thay chia khoa o thu muc cu, se chuyen sang" }
 
-if (Test-Path $SKILL) { Remove-Item $SKILL -Recurse -Force }
-Copy-Item $DICH $SKILL -Recurse -Force
+# KHONG xoa thu muc cu roi chep de. File python.exe trong .venv hay bi KHOA khi
+# Claude Code dang mo -> Remove-Item that bai giua chung, cai dat do dang.
+# (Da gap that 08/08/2026: "Access to the path 'python.exe' is denied")
+# Cach ne: chep de len tren nhung CHUA RA hai thu - .venv (chua file dang khoa)
+# va .env (chia khoa cua hoc vien). Xong moi dung .venv rieng neu chua co.
+New-Item -ItemType Directory -Path $SKILL -Force | Out-Null
+$maChep = Chay-Ngoai { robocopy $DICH $SKILL /MIR /NFL /NDL /NJH /NJS /NP /R:1 /W:1 /XD ".venv" /XF ".env" }
+# robocopy tra ma < 8 la binh thuong; tu 8 tro len moi la that bai
+if ($maChep -ge 8) {
+    Hong "Chep vao thu muc tro ly that bai - dong han Claude Code roi chay lai lenh nay"
+    return
+}
 Dat "Da nap vao: $SKILL"
+
+if (-not (Test-Path (Join-Path $SKILL ".venv"))) {
+    Write-Host "  Dang dung moi truong chay cho tro ly..."
+    Push-Location $SKILL
+    $maS2 = Chay-Ngoai { uv sync }
+    Pop-Location
+    if ($maS2 -ne 0) { Hong "Dung moi truong that bai - dong han Claude Code roi chay lai"; return }
+    Dat "Xong moi truong chay"
+}
 
 if ($giuEnv) {
     Ghi-Env (Join-Path $SKILL ".env") $giuEnv

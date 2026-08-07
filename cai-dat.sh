@@ -117,9 +117,24 @@ if   [ -f "$SKILL/.env" ];    then GIU_ENV="$(cat "$SKILL/.env")"
 elif [ -f "$SKILL_CU/.env" ]; then GIU_ENV="$(cat "$SKILL_CU/.env")"; dat "Tim thay chia khoa o thu muc cu, se chuyen sang"
 fi
 
-rm -rf "$SKILL"
-cp -R "$DICH" "$SKILL"
+# Chep de len tren, CHUA RA .venv (co the dang bi tro ly dung) va .env (chia khoa).
+# Tren Windows viec xoa thang .venv hay that bai vi python.exe bi khoa - Mac it gap
+# hon nhung lam cung mot kieu cho hai ban giong nhau.
+mkdir -p "$SKILL"
+if command -v rsync >/dev/null 2>&1; then
+  rsync -a --delete --exclude ".venv" --exclude ".env" "$DICH/" "$SKILL/"
+else
+  cp -R "$DICH"/. "$SKILL"/ 2>/dev/null
+fi
 dat "Da nap vao: $SKILL"
+
+if [ ! -d "$SKILL/.venv" ]; then
+  echo "  Dang dung moi truong chay cho tro ly..."
+  if ! (cd "$SKILL" && uv sync >/dev/null 2>&1); then
+    hong "Dung moi truong that bai - dong han Claude Code roi chay lai"; exit 1
+  fi
+  dat "Xong moi truong chay"
+fi
 
 if [ -n "$GIU_ENV" ]; then
   printf '%s' "$GIU_ENV" > "$SKILL/.env"
