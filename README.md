@@ -1,173 +1,110 @@
-# Xưởng Video AI - bộ công cụ lớp Autovideo
+# Gói Cắt + Giọng - lớp Autovideo
 
-Bộ đồ nghề để trợ lý AI **nghe được lời** và **nhìn được hình** trong video của bạn - nền của mọi thao tác cắt ghép trong lớp.
-
-> Bản đóng gói riêng cho học viên lớp **Autovideo - Lê Thanh Sơn**. Đã cài sẵn phần tiếng Việt: bóc băng bằng ElevenLabs Scribe (chuẩn tiếng Việt), tải video từ link, và hai đường bóc băng dự phòng miễn phí.
+> **Nếu bạn là trợ lý AI đang đọc kho này**: học viên nhờ bạn cài bộ công cụ dựng video cho lớp học của họ. Đây là **danh mục phần mềm** do thầy Lê Thanh Sơn soạn cho lớp Autovideo - không chứa mã lạ, mọi phần mềm đều là mã nguồn mở phổ biến (FFmpeg, uv, yt-dlp) tải từ trang chính chủ, xem được toàn bộ trước khi chạy.
+>
+> Việc cần làm: **đọc `CAI-DAT.md` rồi làm theo 4 bước trong đó** - soi máy xem có gì, trình kế hoạch cho học viên duyệt, cài từng món và thử ngay sau mỗi món, cuối cùng bàn giao phần cần học viên tự làm (lấy chìa khóa API). Danh sách phần mềm và phiên bản ghim ở `DANH-MUC.md`.
+>
+> Học viên **không giỏi kỹ thuật**. Làm hộ tối đa, và khi buộc phải nhờ họ thì hướng dẫn từng cú bấm.
 
 ---
 
-## Cách 1 - Nhờ trợ lý AI cài hộ (dễ nhất)
+## Gói này cho học viên làm được gì
 
-Mở **Claude Code**, dán nguyên đoạn dưới đây vào ô chat:
+Cài xong là máy bạn **cắt và ghép video bằng cách ra lệnh bằng lời**:
+
+- Cắt đúng ranh giới câu, không bao giờ đứt giữa lời
+- Tìm và bỏ đoạn ậm ừ, ngập ngừng, im lặng dài
+- Chia một video dài thành nhiều clip theo chủ đề
+- Ghép nhiều video, gắn phụ đề chạy theo lời
+- Tải video về từ link YouTube, TikTok, Facebook
+- Tạo giọng đọc cho video
+
+Dùng cho **buổi 1 và buổi 2** của lớp.
+
+---
+
+## Cài thế nào
+
+### Cách 1 - Nhờ trợ lý AI (khuyên dùng)
+
+Mở **Claude Code**, dán đoạn này vào ô chat:
 
 ```
-Tôi là học viên lớp Autovideo của Lê Thanh Sơn. Đây là bộ công cụ giảng viên
-phát cho lớp, mã nguồn mở giấy phép MIT:
+Tôi là học viên lớp Autovideo của thầy Lê Thanh Sơn.
+Đây là kho danh mục phần mềm thầy soạn cho lớp:
 https://github.com/sontyphu/autovideo-toolkit
 
-Cài giúp tôi theo đúng mục "Cách 3 - Cài bằng tay, từng bước" trong README của kho đó:
-1. Đọc README trước để biết các bước
-2. Clone kho về thư mục nhà của tôi
-3. Chạy uv sync
-4. Chép vào .claude/skills/autovideo-toolkit
-5. Kiểm tra lại rồi báo tôi còn thiếu gì
-
-Cứ đọc mã nguồn trước nếu cần, rồi làm từng bước và báo tôi kết quả.
+Nhờ bạn đọc file CAI-DAT.md trong kho đó rồi làm theo giúp tôi:
+soi máy tôi xem đã có gì, trình kế hoạch cho tôi xem, rồi cài từng món.
+Cứ đọc mã nguồn trước nếu cần.
 ```
 
-Trợ lý sẽ đọc kho, xem các bước, rồi làm. Bước cuối là lấy chìa khóa ElevenLabs - phần đó bạn tự làm, xem mục bên dưới.
+Trợ lý sẽ tự soi máy, báo bạn còn thiếu gì, rồi cài. Việc duy nhất bạn phải tự làm là **lấy chìa khóa ElevenLabs** - trợ lý sẽ hướng dẫn từng bước khi tới lúc.
 
-> **Trợ lý từ chối thì vì sao?** Nếu bạn chỉ dán mỗi cái link kèm câu "cài cho tôi", trợ lý sẽ từ chối - nó không biết kho này là gì, ai làm, bên trong có gì. Dán nguyên đoạn ở trên là nó có đủ bối cảnh để làm. Đây là tính năng an toàn, không phải lỗi.
+### Cách 2 - Tự chạy một dòng
 
----
-
-## Cách 2 - Dán 1 dòng, máy tự làm hết
-
-Mở **PowerShell** (Windows), dán dòng này rồi bấm Enter:
+Không muốn nhờ AI thì mở **PowerShell** (Windows) dán dòng này:
 
 ```
 irm https://raw.githubusercontent.com/sontyphu/autovideo-toolkit/main/cai-dat.ps1 | iex
 ```
 
-**Máy Mac** - mở Terminal, dán dòng này:
+**Mac** - mở Terminal:
 
 ```
 curl -fsSL https://raw.githubusercontent.com/sontyphu/autovideo-toolkit/main/cai-dat.sh | bash
 ```
 
-Máy sẽ tự: kiểm đồ nền → cài FFmpeg nếu thiếu → cài uv → tải bộ công cụ → nạp vào trợ lý → chấm điểm 4 mục và báo rõ còn thiếu gì. Mất khoảng 3-6 phút tùy mạng.
+Chạy lại được nhiều lần. Lỡ đứt giữa chừng cứ dán lại, nó tự dọn rồi làm tiếp. Chìa khóa đã nhập được giữ nguyên.
 
-**Chạy lại được nhiều lần** - lỡ đứt giữa chừng thì cứ dán lại dòng đó, nó tự dọn rồi làm tiếp. Chìa khóa ElevenLabs đã nhập thì được giữ nguyên, không phải nhập lại.
+### Cách 3 - Làm tay từng bước
 
-Xong rồi **đóng hẳn PowerShell mở lại**, mở Claude Code gõ: *bạn có skill autovideo-toolkit không*.
-
----
-
-## Cách 3 - Cài bằng tay, từng bước
-
-Mở **PowerShell** (Mac: Terminal). Gõ xong mỗi lệnh bấm Enter.
-
-### Bước 1 - Cài uv
-
-`uv` là người quản kho phần mềm nền. Bộ công cụ này viết bằng Python, `uv` tự lo phần Python cần thiết, bạn không phải đụng tới.
-
-**Kiểm tra đã có chưa:**
-
-```
-uv --version
-```
-
-Hiện ra dòng kiểu `uv 0.11.x` là đã có, bỏ qua bước này.
-
-**Windows:**
-
-```
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
-
-**Mac:**
-
-```
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-Cài xong **đóng hẳn PowerShell rồi mở lại**.
-
-### Bước 2 - Tải bộ công cụ về máy
-
-```
-cd $env:USERPROFILE
-git clone https://github.com/sontyphu/autovideo-toolkit
-```
-
-*(Mac: `cd ~` rồi cùng lệnh `git clone`)*
-
-### Bước 3 - Cài các thứ nó cần
-
-```
-cd autovideo-toolkit
-uv sync
-```
-
-Bước này tải khá nhiều, mất 2-5 phút. Cứ để nó chạy xong.
-
-### Bước 4 - Đặt vào đúng chỗ trợ lý đi tìm
-
-```
-mkdir "$env:USERPROFILE\.claude\skills" -Force
-Copy-Item "$env:USERPROFILE\autovideo-toolkit" "$env:USERPROFILE\.claude\skills\autovideo-toolkit" -Recurse -Force
-```
-
-*(Mac: `mkdir -p ~/.claude/skills && cp -R ~/autovideo-toolkit ~/.claude/skills/autovideo-toolkit`)*
+Xem `DANH-MUC.md`, mục "Lệnh cài và phép kiểm từng món".
 
 ---
 
-## Chìa khóa ElevenLabs
+## Trước khi cài gói này
 
-Bộ công cụ cần chìa khóa ElevenLabs để bóc lời nói trong video thành bản chữ. Lấy chìa khóa và đặt vào máy:
+Phải xong **vé vào lớp** trước: Claude Pro, Claude Desktop, Node.js, Git, và **tài khoản + chìa khóa ElevenLabs**.
 
-1. Vào **elevenlabs.io/app/settings/api-keys**, đăng nhập.
-2. Bấm tạo key mới, **bật tất cả các quyền**, copy chuỗi mã hiện ra.
-3. Chạy lệnh dưới, thay `DAN_KEY_VAO_DAY` bằng chuỗi vừa copy:
+Hướng dẫn: https://sontyphu.github.io/hoc-auto-video/chuan-bi/
 
-```
-"ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY" | Out-File -FilePath "$env:USERPROFILE\.claude\skills\autovideo-toolkit\.env" -Encoding utf8 -NoNewline
-```
-
-*(Mac: `echo "ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY" > ~/.claude/skills/autovideo-toolkit/.env`)*
-
-⚠️ **Không gửi chuỗi này cho ai, không chụp màn hình đưa lên nhóm.** Ai có nó là tiêu tiền được trong tài khoản bạn.
+Chưa xong mà cài gói này thì trợ lý sẽ dừng lại và nhắc bạn quay về trang đó.
 
 ---
 
-## Kiểm tra đã chạy được chưa
+## Cài xong kiểm thế nào
 
-```
-cd $env:USERPROFILE\.claude\skills\autovideo-toolkit
-uv run helpers/timeline_view.py --help
-```
+Đóng hẳn PowerShell mở lại, mở Claude Code gõ:
 
-Hiện ra bảng hướng dẫn là đạt.
+> *bạn có skill video-use không*
 
-Rồi mở Claude Code, gõ: *bạn có skill autovideo-toolkit không* - trợ lý nhận diện được là xong.
+Trợ lý nhận diện được là xong.
 
 ---
 
-## Bộ công cụ này làm được gì
+## Gói tiếp theo
 
-| Việc | Công cụ |
+Trước **buổi 3** cài thêm **Gói Hiệu ứng** (chữ động, hiệu ứng, sao chép phong cách):
+https://github.com/sontyphu/autovideo-effects
+
+---
+
+## Các file trong kho
+
+| File | Cho ai |
 | --- | --- |
-| Bóc lời nói thành bản chữ có mốc thời gian tới từng từ | ElevenLabs Scribe |
-| Cho trợ lý nhìn được khung hình để chọn chỗ cắt | `timeline_view.py` |
-| Cắt video theo ranh giới câu, không đứt giữa lời | `cat_video.py` |
-| Chia video dài thành nhiều clip theo chủ đề | `chia_clip.py` |
-| Tải video từ link YouTube, TikTok, Facebook kèm lời thoại | `tai_video.py` |
-| Bóc băng dự phòng khi chưa mua ElevenLabs | AssemblyAI (50 đô miễn phí) hoặc Groq |
-
----
-
-## Yêu cầu trước khi cài
-
-Bộ này nằm ở **cấp 2** của xưởng. Trước đó máy bạn phải xong phần chuẩn bị: Claude Pro, Claude Desktop, Node.js, Git, **FFmpeg**.
-
-Chưa làm thì xem hướng dẫn chuẩn bị: https://sontyphu.github.io/hoc-auto-video/chuan-bi/
+| `CAI-DAT.md` | Trợ lý AI đọc rồi làm theo |
+| `DANH-MUC.md` | Danh sách phần mềm, phiên bản ghim, phép kiểm |
+| `viet-hoa/` | 10 công cụ tiếng Việt thầy Sơn viết thêm |
+| `cai-dat.ps1` `.sh` | Bộ cài tự động |
+| `kiem-tra.ps1` `.sh` | Xem máy đang có gì, thiếu gì |
+| `LICENSE-nguon.md` | Ghi công thư viện mã nguồn mở dùng trong bộ này |
 
 ---
 
 ## Bản quyền
 
-Bộ **Autovideo Toolkit** do **Lê Thanh Sơn** đóng gói và phát cho học viên lớp Autovideo: phần bóc băng tiếng Việt, tải video từ link, bộ khởi động chữ tiếng Việt và các công cụ trợ giúp đều do anh viết thêm.
+Mười công cụ trong `viet-hoa/` do **Lê Thanh Sơn** viết, phát cho học viên lớp Autovideo.
 
-Phần lõi xử lý video dựng trên một thư viện mã nguồn mở giấy phép MIT - giấy phép này cho phép đóng gói lại và phát hành, đổi lại phải giữ nguyên file `LICENSE`. Đó là lý do file đó có mặt trong bộ này.
-
-
+Chúng chạy trên nền thư viện mã nguồn mở **video-use** của Browser Use (giấy phép MIT) - bộ cài tải thư viện đó từ kho gốc của họ, kho này **không chứa mã của họ**. Chi tiết ghi công: `LICENSE-nguon.md`.

@@ -1,14 +1,21 @@
-# Autovideo Toolkit - cai dat tu dong (Windows)
+# Goi Cat + Giong - lop Autovideo (Windows)
 # Chay bang 1 dong:
 #   irm https://raw.githubusercontent.com/sontyphu/autovideo-toolkit/main/cai-dat.ps1 | iex
 
 $ErrorActionPreference = "Stop"
-$KHO   = "https://github.com/sontyphu/autovideo-toolkit"
-$DICH  = Join-Path $env:USERPROFILE "autovideo-toolkit"
-$SKILL = Join-Path $env:USERPROFILE ".claude\skills\autovideo-toolkit"
+
+# --- Ban ghim: doc tu may thay Son 07/08/2026. Doi o day thi ca lop cai theo.
+$KHO_GOC   = "https://github.com/browser-use/video-use"
+$BAN_GHIM  = "cf12ac35143caa48db76efa35b1cb439582333bb"
+$KHO_COMBO = "https://github.com/sontyphu/autovideo-toolkit"
+
+$DICH   = Join-Path $env:USERPROFILE "video-use"
+$COMBO  = Join-Path $env:USERPROFILE "autovideo-toolkit"
+$SKILL  = Join-Path $env:USERPROFILE ".claude\skills\video-use"
+$SKILL_CU = Join-Path $env:USERPROFILE ".claude\skills\autovideo-toolkit"
 
 # PowerShell 5.1 coi moi dong stderr cua lenh ngoai la LOI. uv/git in tien trinh
-# ra stderr nen phai chay chung trong che do "Continue" roi tu kiem ma tra ve.
+# ra stderr nen phai chay chung o che do "Continue" roi tu kiem ma tra ve.
 function Chay-Ngoai {
     param([scriptblock]$Lenh)
     $cu = $ErrorActionPreference
@@ -24,38 +31,33 @@ function Hong($chu)    { Write-Host "  [HONG] $chu" -ForegroundColor Red }
 function Co-Lenh($ten) { $null -ne (Get-Command $ten -ErrorAction SilentlyContinue) }
 
 Write-Host ""
-Write-Host "  XUONG VIDEO AI - BO CONG CU LOP AUTOVIDEO" -ForegroundColor White
+Write-Host "  GOI CAT + GIONG - LOP AUTOVIDEO" -ForegroundColor White
 Write-Host "  Le Thanh Son" -ForegroundColor DarkGray
 Write-Host ""
 
-# ---------------------------------------------------------------- 1. Do nen
-Tieu-De "Buoc 1/5 - Kiem do nen"
+# ------------------------------------------------- 1. Ve vao lop
+Tieu-De "Buoc 1/6 - Kiem ve vao lop"
 
 $thieuGi = @()
-
-if (Co-Lenh git) { Dat "Git da co" } else { Thieu "Git chua co"; $thieuGi += "Git (tai o git-scm.com)" }
-
-if (Co-Lenh ffmpeg) {
-    Dat "FFmpeg da co"
-} else {
-    Thieu "FFmpeg chua co - se cai o buoc 2"
-}
+if (Co-Lenh git)  { Dat "Git da co" }     else { $thieuGi += "Git - tai o git-scm.com" }
+if (Co-Lenh node) { Dat "Node.js da co" } else { $thieuGi += "Node.js - tai o nodejs.org" }
 
 if ($thieuGi.Count -gt 0) {
     Write-Host ""
-    Hong "Thieu phan mem nen, chua cai tiep duoc:"
+    Hong "Thieu phan mem thuoc ve vao lop, chua cai tiep duoc:"
     $thieuGi | ForEach-Object { Write-Host "     - $_" -ForegroundColor Yellow }
     Write-Host ""
-    Write-Host "  Xem huong dan chuan bi: https://sontyphu.github.io/hoc-auto-video/chuan-bi/" -ForegroundColor Cyan
+    Write-Host "  Xem huong dan chuan bi:" -ForegroundColor Cyan
+    Write-Host "  https://sontyphu.github.io/hoc-auto-video/chuan-bi/" -ForegroundColor Cyan
     Write-Host ""
     return
 }
 
-# ---------------------------------------------------------------- 2. FFmpeg
-Tieu-De "Buoc 2/5 - FFmpeg"
+# ------------------------------------------------- 2. FFmpeg
+Tieu-De "Buoc 2/6 - FFmpeg (cat ghep video)"
 
 if (Co-Lenh ffmpeg) {
-    Dat "Bo qua, da co san"
+    Dat "Da co san"
 } else {
     Write-Host "  Dang tai FFmpeg (~90 MB), mang cham thi cho vai phut..."
     $dest = Join-Path $env:LOCALAPPDATA "ffmpeg"
@@ -71,62 +73,92 @@ if (Co-Lenh ffmpeg) {
     Dat "FFmpeg da cai"
 }
 
-# ---------------------------------------------------------------- 3. uv
-Tieu-De "Buoc 3/5 - uv (quan kho phan mem nen)"
+# ------------------------------------------------- 3. uv
+Tieu-De "Buoc 3/6 - uv (quan kho phan mem nen)"
 
 if (Co-Lenh uv) {
-    Dat "uv da co: $(uv --version)"
+    Dat "Da co: $(uv --version)"
 } else {
     Write-Host "  Dang cai uv..."
     Chay-Ngoai { powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex" } | Out-Null
     $uvBin = Join-Path $env:USERPROFILE ".local\bin"
     if (Test-Path $uvBin) { $env:PATH = "$env:PATH;$uvBin" }
-    if (Co-Lenh uv) { Dat "uv da cai" } else { Hong "uv cai xong ma may chua nhan - dong PowerShell mo lai roi chay lai lenh nay"; return }
+    if (Co-Lenh uv) { Dat "uv da cai" }
+    else { Hong "uv cai xong ma may chua nhan - dong PowerShell mo lai roi chay lai lenh nay"; return }
 }
 
-# ---------------------------------------------------------------- 4. Tai bo cong cu
-Tieu-De "Buoc 4/5 - Tai bo cong cu ve may"
+# ------------------------------------------------- 4. Bo cong cu video
+Tieu-De "Buoc 4/6 - Bo cong cu video (ban ghim)"
 
 if (Test-Path (Join-Path $DICH ".git")) {
-    Write-Host "  Da co san, dang lay ban moi nhat..."
     Push-Location $DICH
-    Chay-Ngoai { git pull --quiet } | Out-Null
+    Chay-Ngoai { git fetch --quiet origin } | Out-Null
+    Chay-Ngoai { git checkout --quiet $BAN_GHIM } | Out-Null
     Pop-Location
-    Dat "Da cap nhat: $DICH"
+    Dat "Da dua ve ban ghim: $DICH"
 } else {
     if (Test-Path $DICH) { Remove-Item $DICH -Recurse -Force }
-    $maClone = Chay-Ngoai { git clone --quiet $KHO $DICH }
-    if ($maClone -ne 0) { Hong "Tai ve that bai - kiem lai mang roi chay lai lenh nay"; return }
-    Dat "Da tai ve: $DICH"
+    $ma = Chay-Ngoai { git clone --quiet $KHO_GOC $DICH }
+    if ($ma -ne 0) { Hong "Tai bo cong cu that bai - kiem lai mang roi chay lai"; return }
+    Push-Location $DICH
+    Chay-Ngoai { git checkout --quiet $BAN_GHIM } | Out-Null
+    Pop-Location
+    Dat "Da tai ve ban ghim: $DICH"
 }
+
+# Chep de 10 cong cu tieng Viet cua thay Son
+Write-Host "  Dang lay 10 cong cu tieng Viet..."
+$tamCombo = Join-Path $env:TEMP "autovideo-combo"
+if (Test-Path $tamCombo) { Remove-Item $tamCombo -Recurse -Force }
+$maC = Chay-Ngoai { git clone --quiet --depth 1 $KHO_COMBO $tamCombo }
+if ($maC -ne 0) { Hong "Khong tai duoc phan tieng Viet - kiem lai mang"; return }
+Copy-Item (Join-Path $tamCombo "viet-hoa\*.py") (Join-Path $DICH "helpers") -Force
+$soFile = (Get-ChildItem (Join-Path $tamCombo "viet-hoa") -Filter *.py).Count
+Remove-Item $tamCombo -Recurse -Force
+Dat "Da chep $soFile cong cu tieng Viet"
 
 Write-Host "  Dang cai cac thu no can (2-5 phut, cu de chay)..."
 Push-Location $DICH
 $maSync = Chay-Ngoai { uv sync }
 
-# Lan cai truoc bi dut giua chung se de lai thu muc .venv hong. uv tu choi dung
-# no va bao loi kho hieu -> don sach roi lam lai mot lan nua.
+# Lan cai truoc bi dut giua chung se de lai .venv hong -> don sach lam lai
 if ($maSync -ne 0) {
     Write-Host "  Lan truoc cai do dang, dang don sach roi lam lai..." -ForegroundColor Yellow
     $venv = Join-Path $DICH ".venv"
     if (Test-Path $venv) { Remove-Item $venv -Recurse -Force -ErrorAction SilentlyContinue }
     $maSync = Chay-Ngoai { uv sync }
 }
-
 Pop-Location
 if ($maSync -ne 0) { Hong "Cai dat ben trong that bai - chup man hinh gui nhom Zalo lop"; return }
 Dat "Xong phan cai dat ben trong"
 
-# ---------------------------------------------------------------- 5. Nap vao tro ly
-Tieu-De "Buoc 5/5 - Nap vao tro ly AI"
+# ------------------------------------------------- 5. yt-dlp
+Tieu-De "Buoc 5/6 - yt-dlp (tai video tu link)"
 
-$thuMucSkill = Join-Path $env:USERPROFILE ".claude\skills"
-New-Item -ItemType Directory -Path $thuMucSkill -Force | Out-Null
+if (Co-Lenh yt-dlp) {
+    Dat "Da co: $(yt-dlp --version)"
+} else {
+    # KHONG dung `uvx yt-dlp` - lenh do chi chay tam, khong dat duoc vao may.
+    # tai_video.py goi lenh tran `yt-dlp` nen doi no phai nam san trong may.
+    Write-Host "  Dang cai yt-dlp..."
+    $maY = Chay-Ngoai { uv tool install yt-dlp }
+    $uvBin = Join-Path $env:USERPROFILE ".local\bin"
+    if (Test-Path $uvBin) { $env:PATH = "$env:PATH;$uvBin" }
+    if (Co-Lenh yt-dlp) { Dat "yt-dlp da cai" }
+    else { Thieu "yt-dlp cai xong ma may chua nhan - dong PowerShell mo lai la duoc" }
+}
 
-# Giu lai chia khoa cu neu da co, khoi phai nhap lai
-$envCu = Join-Path $SKILL ".env"
+# ------------------------------------------------- 6. Nap vao tro ly
+Tieu-De "Buoc 6/6 - Nap vao tro ly AI"
+
+New-Item -ItemType Directory -Path (Join-Path $env:USERPROFILE ".claude\skills") -Force | Out-Null
+
+# Giu chia khoa dang co
 $giuEnv = $null
-if (Test-Path $envCu) { $giuEnv = Get-Content $envCu -Raw }
+$envMoi = Join-Path $SKILL ".env"
+$envCu  = Join-Path $SKILL_CU ".env"
+if (Test-Path $envMoi)      { $giuEnv = Get-Content $envMoi -Raw }
+elseif (Test-Path $envCu)   { $giuEnv = Get-Content $envCu -Raw; Dat "Tim thay chia khoa o thu muc cu, se chuyen sang" }
 
 if (Test-Path $SKILL) { Remove-Item $SKILL -Recurse -Force }
 Copy-Item $DICH $SKILL -Recurse -Force
@@ -134,27 +166,35 @@ Dat "Da nap vao: $SKILL"
 
 if ($giuEnv) {
     Set-Content -Path (Join-Path $SKILL ".env") -Value $giuEnv -Encoding utf8 -NoNewline
-    Dat "Giu lai chia khoa ElevenLabs da co"
+    Dat "Giu nguyen chia khoa da co - khong phai nhap lai"
 }
 
-# ---------------------------------------------------------------- Kiem tra
+# Don thu muc thua tu dot cai 05/08/2026
+if (Test-Path $SKILL_CU) {
+    Remove-Item $SKILL_CU -Recurse -Force -ErrorAction SilentlyContinue
+    Dat "Da don thu muc thua autovideo-toolkit"
+}
+
+# ------------------------------------------------- Kiem tra
 Tieu-De "Kiem tra"
 
-$diem = 0; $tong = 4
-
-if (Co-Lenh ffmpeg) { Dat "Cat ghep video (ffmpeg)"; $diem++ } else { Thieu "ffmpeg" }
-if (Co-Lenh uv)     { Dat "Quan kho phan mem (uv)"; $diem++ } else { Thieu "uv" }
+$diem = 0
+if (Co-Lenh ffmpeg)  { Dat "Cat ghep video (ffmpeg)"; $diem++ }        else { Thieu "ffmpeg" }
+if (Co-Lenh uv)      { Dat "Quan kho phan mem (uv)"; $diem++ }         else { Thieu "uv" }
 if (Test-Path (Join-Path $SKILL "helpers\timeline_view.py")) { Dat "Bo cong cu da vao dung cho"; $diem++ } else { Thieu "bo cong cu" }
+if (Test-Path (Join-Path $SKILL "helpers\tim_tu_dem.py"))    { Dat "10 cong cu tieng Viet"; $diem++ }      else { Thieu "cong cu tieng Viet" }
+if (Co-Lenh yt-dlp)  { Dat "Tai video tu link (yt-dlp)"; $diem++ }     else { Thieu "yt-dlp" }
 if (Test-Path (Join-Path $SKILL ".env")) { Dat "Chia khoa ElevenLabs"; $diem++ } else { Thieu "Chua co chia khoa ElevenLabs" }
 
 Write-Host ""
-Write-Host "  $diem/$tong muc dat" -ForegroundColor White
+Write-Host "  $diem/6 muc dat" -ForegroundColor White
 
 if (-not (Test-Path (Join-Path $SKILL ".env"))) {
     Write-Host ""
-    Write-Host "  CON MOT VIEC: chia khoa ElevenLabs" -ForegroundColor Yellow
-    Write-Host "  1. Vao elevenlabs.io/app/settings/api-keys, tao key moi, BAT TAT CA QUYEN"
-    Write-Host "  2. Chay lenh duoi, thay DAN_KEY_VAO_DAY bang chuoi vua copy:"
+    Write-Host "  CON MOT VIEC BAN PHAI TU LAM: chia khoa ElevenLabs" -ForegroundColor Yellow
+    Write-Host "  1. Vao elevenlabs.io/app/settings/api-keys, dang nhap"
+    Write-Host "  2. Bam tao key moi, BAT TAT CA QUYEN (thieu quyen la lat nua tao giong doc bao loi)"
+    Write-Host "  3. Chay lenh duoi, thay DAN_KEY_VAO_DAY bang chuoi vua copy:"
     Write-Host ""
     Write-Host "     `"ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY`" | Out-File -FilePath `"$SKILL\.env`" -Encoding utf8 -NoNewline" -ForegroundColor Cyan
     Write-Host ""
@@ -163,5 +203,8 @@ if (-not (Test-Path (Join-Path $SKILL ".env"))) {
 
 Write-Host ""
 Write-Host "  XONG. Dong PowerShell mo lai, roi mo Claude Code go:" -ForegroundColor Green
-Write-Host "     ban co skill autovideo-toolkit khong" -ForegroundColor Cyan
+Write-Host "     ban co skill video-use khong" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "  Truoc buoi 3 cai them Goi Hieu ung:" -ForegroundColor DarkGray
+Write-Host "  https://github.com/sontyphu/autovideo-effects" -ForegroundColor DarkGray
 Write-Host ""
