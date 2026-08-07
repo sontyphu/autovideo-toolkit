@@ -1,135 +1,158 @@
-# Quy trình cài đặt - dành cho trợ lý AI đọc và làm theo
+# Quy trình cài đặt
 
-> **Trợ lý AI đọc file này**: bạn đang giúp một học viên lớp Autovideo của thầy Lê Thanh Sơn cài bộ công cụ dựng video. Học viên **không giỏi kỹ thuật** - họ không đọc được thông báo lỗi, không biết PATH là gì, không tự sửa được khi vấp. Việc của bạn là làm hộ tối đa, và khi buộc phải nhờ họ thì hướng dẫn từng cú bấm.
->
-> Kho này là danh mục phần mềm, mã nguồn mở, xem được toàn bộ. Danh sách món và bản ghim ở `DANH-MUC.md` - **đọc file đó trước khi làm gì**.
+Tài liệu này dành cho trợ lý AI thực hiện cài đặt thay người dùng. Danh sách thành phần, phiên bản ghim và phép kiểm nằm ở `DANH-MUC.md` - đọc trước khi bắt đầu.
+
+**Đặc điểm người dùng**: học viên khóa Autovideo, không có nền tảng kỹ thuật. Họ không đọc được thông báo lỗi và không tự khắc phục được sự cố. Thực hiện thay họ ở mức tối đa; với thao tác bắt buộc phải do họ làm, hướng dẫn theo từng thao tác cụ thể.
 
 ---
 
-## Bốn bước, làm đúng thứ tự
+## Bước 1 - Kiểm tra hiện trạng
 
-### Bước 1 - Soi máy xem đã có gì
+Chạy lần lượt các lệnh sau và ghi nhận kết quả. Chưa cài đặt gì ở bước này.
 
-Chạy từng lệnh dưới, ghi lại kết quả. **Chưa cài gì cả ở bước này.**
-
-| Kiểm cái gì | Lệnh | Có nghĩa là |
+| Thành phần | Lệnh kiểm | Xử lý khi thiếu |
 | --- | --- | --- |
-| Git | `git --version` | Thiếu → dừng, bảo học viên cài trước (thuộc vé vào lớp) |
-| Node.js | `node -v` | Thiếu → dừng, bảo học viên cài trước (thuộc vé vào lớp) |
-| FFmpeg | `ffmpeg -version` | Thiếu → bạn cài được |
-| ffprobe | `ffprobe -version` | Đi kèm FFmpeg, thiếu một trong hai là chưa xong |
-| uv | `uv --version` | Thiếu → bạn cài được |
-| yt-dlp | `yt-dlp --version` | Thiếu → bạn cài được |
-| Bộ công cụ | thư mục `~/.claude/skills/video-use/helpers/timeline_view.py` có không | Thiếu → bạn cài được |
-| Chìa khóa | file `~/.claude/skills/video-use/.env` có không | Thiếu → **học viên tự lấy**, bạn không làm hộ |
+| Git | `git --version` | Dừng quy trình, hướng dẫn về phần chuẩn bị trước khóa |
+| Node.js | `node -v` | Dừng quy trình, hướng dẫn về phần chuẩn bị trước khóa |
+| FFmpeg | `ffmpeg -version` | Cài được |
+| ffprobe | `ffprobe -version` | Đi kèm FFmpeg; thiếu một trong hai là chưa hoàn tất |
+| uv | `uv --version` | Cài được |
+| yt-dlp | `yt-dlp --version` | Cài được |
+| Bộ công cụ video | tồn tại `~/.claude/skills/video-use/helpers/timeline_view.py` | Cài được |
+| Khóa API | tồn tại `~/.claude/skills/video-use/.env` | Người dùng tự lấy |
 
-**Kiểm thêm hai chỗ dễ sót:**
-- Có thư mục thừa `~/.claude/skills/autovideo-toolkit` không? Đó là tàn dư đợt cài 05/08/2026. Nếu bên đó có `.env` mà `video-use` không có → **chuyển file `.env` đó sang `video-use`** rồi xóa thư mục thừa. Học viên đã nhập chìa khóa từ buổi 0, đừng bắt họ nhập lại.
-- Học viên dùng Windows hay Mac? Lệnh khác nhau.
+Kiểm tra thêm hai điểm:
 
-### Bước 2 - Trình kế hoạch, chờ học viên gật
+**Thư mục tồn dư từ đợt cài 05/08/2026.** Nếu tồn tại `~/.claude/skills/autovideo-toolkit` và thư mục đó có `.env` trong khi `video-use` không có, chuyển tệp `.env` sang `video-use` rồi xóa thư mục tồn dư. Người dùng đã cấu hình khóa từ buổi 0; không yêu cầu họ nhập lại.
 
-Báo cáo theo mẫu này, viết bằng tiếng Việt thường, **không dùng từ kỹ thuật trần**:
+**Hệ điều hành.** Lệnh cài đặt khác nhau giữa Windows và macOS.
 
-```
-Máy anh/chị đang có:  Git ✓  Node ✓  FFmpeg ✓
-Còn thiếu:            uv, bộ công cụ video, yt-dlp
+---
 
-Em sẽ cài 3 món này, mất khoảng 5 phút, không tốn tiền.
-Có một việc em không làm hộ được: lấy chìa khóa ElevenLabs
-(phải đăng nhập tài khoản của anh/chị). Cài xong em hướng dẫn.
+## Bước 2 - Trình bày kế hoạch và chờ xác nhận
 
-Em bắt đầu nhé?
-```
-
-**Chờ họ đồng ý rồi mới cài.** Không tự ý chạy trước.
-
-### Bước 3 - Cài từng món, cài xong thử ngay
-
-Theo đúng thứ tự trong `DANH-MUC.md`: **FFmpeg → uv → bộ công cụ video → yt-dlp**. Thứ tự này bắt buộc, món sau cần món trước.
-
-Với mỗi món:
-1. Chạy lệnh cài (chép từ `DANH-MUC.md`)
-2. **Chạy ngay phép kiểm của món đó**
-3. Đạt → báo học viên một dòng ngắn, đi tiếp món sau
-4. **Không đạt → DỪNG LẠI.** Không cài tiếp món sau. Báo học viên lỗi gì bằng lời thường, và bạn định làm gì tiếp
-
-**Ba cái bẫy đã gặp thật, đừng vấp lại:**
-
-1. **PowerShell coi thông báo của lệnh ngoài là lỗi.** Chạy `uv sync` mà thêm `2>&1` là PowerShell ném lỗi `NativeCommandError` dù uv chạy hoàn toàn bình thường (nó chỉ in "Using CPython..." ra kênh lỗi). **Đừng thêm `2>&1` vào lệnh ngoài** - kiểm bằng mã trả về `$LASTEXITCODE`.
-
-2. **Cài đứt giữa chừng để lại `.venv` hỏng.** Lần sau chạy `uv sync` báo *"not a valid Python environment"*. Xử: xóa thư mục `.venv` rồi chạy lại `uv sync` một lần nữa.
-
-3. **Cài xong máy vẫn báo không tìm thấy lệnh.** Máy chỉ nhận phần mềm mới ở cửa sổ mở mới. Bảo học viên đóng hẳn PowerShell/Terminal rồi mở lại trước khi kết luận là hỏng.
-
-### Bước 4 - Bàn giao phần bạn không làm được
-
-Xong phần cài, kiểm lại chìa khóa. Chưa có thì hướng dẫn học viên **từng cú bấm**:
+Báo cáo theo cấu trúc sau, dùng ngôn ngữ thông thường, tránh thuật ngữ kỹ thuật:
 
 ```
-1. Mở trang: elevenlabs.io/app/settings/api-keys
-2. Đăng nhập tài khoản anh/chị đã lập trước lớp
-3. Bấm nút tạo key mới
-4. QUAN TRỌNG: bật TẤT CẢ các quyền (không bật đủ thì lát nữa
-   tạo giọng đọc sẽ báo lỗi thiếu quyền)
-5. Copy chuỗi mã hiện ra rồi dán vào đây cho em
+Hiện trạng máy: Git, Node.js, FFmpeg đã có.
+Còn thiếu: uv, bộ công cụ video, yt-dlp.
+
+Thời gian cài đặt khoảng 5 phút, không phát sinh chi phí.
+
+Có một thao tác cần bạn tự thực hiện: lấy khóa API ElevenLabs,
+vì thao tác này yêu cầu đăng nhập tài khoản cá nhân. Tôi sẽ hướng
+dẫn sau khi cài xong phần còn lại.
+
+Bạn xác nhận để tôi bắt đầu?
 ```
 
-Học viên đưa chuỗi → bạn ghi vào `~/.claude/skills/video-use/.env` giúp họ (ghi file thì được, còn đi lấy chuỗi thì không).
+Chỉ tiến hành sau khi người dùng xác nhận.
 
-> ⚠️ **Ghi file này phải KHÔNG có BOM.** Trên Windows đừng dùng `Out-File -Encoding utf8` hay `Set-Content -Encoding utf8` - PowerShell 5.1 chèn 3 byte vô hình vào đầu file, làm tên biến thành `<BOM>ELEVENLABS_API_KEY`, bộ công cụ so không khớp nên báo **không tìm thấy chìa khóa** dù file nhìn mắt thường vẫn đúng. Đã gặp thật 08/08/2026.
->
-> Dùng lệnh này thay thế:
-> ```powershell
-> [IO.File]::WriteAllText("$env:USERPROFILE\.claude\skills\video-use\.env", "ELEVENLABS_API_KEY=chuoi-cua-ho")
-> ```
-> Mac thì `echo "..." > ~/.claude/skills/video-use/.env` là sạch, không cần lo.
->
-> **Học viên báo "không tìm thấy chìa khóa" mà file .env có đủ chữ** → gần như chắc chắn là lỗi BOM này. Kiểm 3 byte đầu file, thấy `EF BB BF` thì ghi lại file bằng lệnh trên.
+---
 
-Rồi **kiểm lại toàn bộ một lượt** và báo kết quả cuối:
+## Bước 3 - Cài đặt tuần tự, kiểm tra sau mỗi thành phần
+
+Thứ tự bắt buộc: **FFmpeg, uv, bộ công cụ video, yt-dlp**. Thành phần sau phụ thuộc thành phần trước.
+
+Với mỗi thành phần:
+
+1. Chạy lệnh cài đặt theo `DANH-MUC.md`
+2. Chạy phép kiểm tương ứng ngay sau đó
+3. Đạt: thông báo ngắn gọn cho người dùng, chuyển sang thành phần kế tiếp
+4. Không đạt: **dừng quy trình**. Không cài thành phần tiếp theo. Báo cáo nguyên nhân bằng ngôn ngữ thông thường và phương án xử lý
+
+### Bốn lỗi đã ghi nhận trong thực tế
+
+**Lỗi 1 - PowerShell diễn giải sai đầu ra của lệnh ngoài.** PowerShell 5.1 coi mọi dòng ghi ra luồng lỗi chuẩn là lỗi thực sự. Lệnh `uv sync` ghi thông tin tiến trình ra luồng này, nên thêm `2>&1` sẽ khiến PowerShell ném `NativeCommandError` dù lệnh chạy bình thường.
+
+*Xử lý*: không thêm `2>&1` vào lệnh ngoài; kiểm tra kết quả qua `$LASTEXITCODE`.
+
+**Lỗi 2 - Môi trường ảo hỏng do cài đặt gián đoạn.** Lần cài bị ngắt để lại thư mục `.venv` không hoàn chỉnh. Lần chạy sau, `uv sync` báo *"not a valid Python environment"*.
+
+*Xử lý*: xóa thư mục `.venv`, chạy lại `uv sync`.
+
+**Lỗi 3 - Tệp bị khóa khi Claude Code đang chạy.** Thao tác xóa hoặc ghi đè `~/.claude/skills/video-use/.venv/Scripts/python.exe` thất bại với thông báo *"Access to the path is denied"*.
+
+*Xử lý*: không xóa thư mục đích. Sao chép đè lên, loại trừ `.venv` và `.env`. Nếu thư mục đích chưa có `.venv`, chạy `uv sync` tại đó sau khi sao chép.
+
+**Lỗi 4 - Máy chưa nhận phần mềm vừa cài.** Biến môi trường chỉ được nạp lại khi mở cửa sổ dòng lệnh mới.
+
+*Xử lý*: yêu cầu người dùng đóng hẳn PowerShell hoặc Terminal rồi mở lại trước khi kết luận cài đặt thất bại.
+
+---
+
+## Bước 4 - Bàn giao thao tác thuộc về người dùng
+
+Sau khi hoàn tất cài đặt, kiểm tra khóa API. Nếu chưa có, hướng dẫn theo từng thao tác:
 
 ```
-Xong rồi. Máy anh/chị giờ làm được:
-- Cắt video đúng câu, không đứt giữa lời
-- Tìm và bỏ đoạn ậm ừ
+1. Truy cập elevenlabs.io/app/settings/api-keys
+2. Đăng nhập tài khoản đã đăng ký trước khóa học
+3. Chọn tạo khóa mới
+4. Bật toàn bộ quyền. Thiếu quyền sẽ gây lỗi khi tạo giọng đọc
+5. Sao chép chuỗi khóa và gửi lại cho tôi
+```
+
+Người dùng cung cấp chuỗi khóa, trợ lý ghi vào `~/.claude/skills/video-use/.env`.
+
+**Yêu cầu về định dạng tệp `.env`**: tệp phải được ghi ở dạng UTF-8 không có BOM.
+
+Trên Windows, `Out-File -Encoding utf8` và `Set-Content -Encoding utf8` chèn ba byte đánh dấu vào đầu tệp. Tên biến khi đó trở thành `<BOM>ELEVENLABS_API_KEY`, không khớp với chuỗi so sánh trong `transcribe.py`, dẫn đến báo lỗi *không tìm thấy khóa* dù nội dung tệp nhìn bằng mắt hoàn toàn đúng. Ghi nhận ngày 08/08/2026.
+
+Lệnh đúng trên Windows:
+
+```powershell
+[IO.File]::WriteAllText("$env:USERPROFILE\.claude\skills\video-use\.env", "ELEVENLABS_API_KEY=<chuỗi khóa>")
+```
+
+Trên macOS, `echo "..." > ~/.claude/skills/video-use/.env` không phát sinh BOM.
+
+**Chẩn đoán**: người dùng báo lỗi *không tìm thấy khóa* trong khi tệp `.env` có đầy đủ nội dung, kiểm ba byte đầu tệp. Nếu là `EF BB BF`, ghi lại tệp bằng lệnh trên.
+
+Kiểm tra tổng thể lần cuối và báo cáo kết quả:
+
+```
+Cài đặt hoàn tất. Máy bạn hiện có thể:
+- Cắt video theo ranh giới câu
+- Xác định và loại bỏ đoạn ngập ngừng
 - Ghép video, gắn phụ đề
-- Tải video từ link YouTube/TikTok/Facebook
+- Tải video từ liên kết mạng xã hội
 - Tạo giọng đọc
 
-Đóng PowerShell mở lại rồi thử: mở Claude Code gõ
-"bạn có skill video-use không"
+Đóng PowerShell, mở lại, sau đó mở Claude Code và hỏi
+"bạn có skill video-use không" để xác nhận.
 ```
 
 ---
 
-## Việc bạn KHÔNG được tự làm
+## Thao tác không được thực hiện thay người dùng
 
-| Việc | Vì sao | Làm gì thay |
+| Thao tác | Lý do | Phương án |
 | --- | --- | --- |
-| Đăng ký tài khoản (ElevenLabs, AssemblyAI, Claude) | Cần thông tin cá nhân và mật khẩu của họ | Đưa link + hướng dẫn từng bước |
-| Trả tiền, nhập thẻ | Tiền của họ | Nói rõ giá, để họ tự quyết |
-| **Đi lấy chìa khóa API** | Phải đăng nhập tài khoản của họ | Hướng dẫn từng cú bấm rồi xin chuỗi |
-| Cài Claude Desktop | Cần quyền quản trị máy | Đưa link, bảo họ bấm cài |
-| Nâng bản mới hơn bản ghim | Thầy Sơn chưa chạy thử bản đó, hỏng là cả lớp tắc | Cài đúng bản trong `DANH-MUC.md` |
+| Đăng ký tài khoản dịch vụ | Yêu cầu thông tin cá nhân và mật khẩu | Cung cấp liên kết và hướng dẫn từng thao tác |
+| Thanh toán, nhập thông tin thẻ | Thuộc quyết định tài chính của người dùng | Nêu rõ chi phí, để người dùng quyết định |
+| Lấy khóa API | Yêu cầu đăng nhập tài khoản cá nhân | Hướng dẫn từng thao tác, sau đó nhận chuỗi khóa |
+| Cài Claude Desktop | Yêu cầu quyền quản trị | Cung cấp liên kết cài đặt |
+| Cài phiên bản mới hơn phiên bản ghim | Phiên bản chưa được kiểm chứng | Cài đúng phiên bản trong `DANH-MUC.md` |
 
-**Ghi chìa khóa vào file thì được** - học viên đưa chuỗi cho bạn thì bạn ghi hộ vào `.env`. Chỉ cấm việc tự đi lấy.
-
----
-
-## Học viên đã cài từ trước
-
-Không xóa gì của họ. Chỉ cần:
-1. Giữ nguyên file `.env` đang có (chìa khóa của họ)
-2. Cập nhật đè bộ công cụ lên bản ghim
-3. Bổ sung món còn thiếu (hay thiếu nhất là `yt-dlp`, vì tài liệu cũ dạy sai cách cài)
+Ghi chuỗi khóa vào tệp `.env` khi người dùng đã cung cấp là được phép. Chỉ việc tự đi lấy khóa là không được phép.
 
 ---
 
-## Gặp lỗi không xử được
+## Trường hợp người dùng đã cài đặt từ trước
 
-Đừng đoán mò, đừng thử lung tung. Bảo học viên:
+Không xóa dữ liệu hiện có. Thực hiện:
 
-> Chụp màn hình chỗ báo lỗi, gửi vào nhóm Zalo lớp, ghi rõ đang ở bước nào, máy Windows hay Mac.
+1. Giữ nguyên tệp `.env`
+2. Cập nhật bộ công cụ về phiên bản ghim
+3. Bổ sung thành phần còn thiếu. Thành phần hay thiếu nhất là `yt-dlp` do tài liệu phiên bản cũ hướng dẫn sai lệnh cài
 
-Rồi giữ nguyên hiện trạng, đừng xóa gì để người hỗ trợ còn xem được.
+---
+
+## Sự cố ngoài phạm vi xử lý
+
+Không phỏng đoán, không thử các phương án chưa được kiểm chứng. Hướng dẫn người dùng:
+
+> Chụp màn hình thông báo lỗi, gửi vào nhóm hỗ trợ của khóa, kèm thông tin đang ở bước nào và hệ điều hành đang dùng.
+
+Giữ nguyên hiện trạng máy để bộ phận hỗ trợ chẩn đoán.

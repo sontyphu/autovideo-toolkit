@@ -1,43 +1,47 @@
-# Danh mục phần mềm - Gói Cắt + Giọng
+# Danh mục thành phần - Gói Cắt và Giọng
 
-> Bản ghim: đây là **đúng phiên bản thầy Sơn đang chạy thật**, đọc từ máy thầy ngày **07/08/2026**.
-> Thầy nâng bản thì cập nhật file này, cả lớp cài theo. Đừng tự nâng lên bản mới nhất - hãng sửa gì hỏng là cả lớp tắc cùng lúc.
+Phiên bản trong tài liệu này là phiên bản đã kiểm chứng trên máy tác giả ngày **07/08/2026**. Khi tác giả nâng cấp, tài liệu được cập nhật và toàn bộ học viên cài theo phiên bản mới.
 
-## Trước khi cài gói này - phải xong "vé vào lớp"
+Không tự nâng lên phiên bản mới nhất. Thay đổi từ nhà phát hành có thể phá vỡ quy trình đang vận hành, và sự cố sẽ xảy ra đồng loạt trên toàn lớp.
 
-Bốn thứ dưới đây học viên **tự cài trước khi tới lớp**, không nằm trong gói này. Chưa xong thì gói này cài cũng không chạy.
+---
 
-| Món | Bản thầy dùng | Vì sao cần |
+## Điều kiện tiên quyết
+
+Các thành phần sau thuộc phần chuẩn bị trước khóa học, do học viên tự cài đặt. Gói này không cài chúng và sẽ dừng lại nếu thiếu.
+
+| Thành phần | Phiên bản tham chiếu | Vai trò |
 | --- | --- | --- |
-| Tài khoản **Claude Pro** | gói trả phí ~500.000đ/tháng | Bản miễn phí dùng một lúc là bị chặn giữa chừng |
-| **Claude Desktop** | bản mới nhất | Ứng dụng chạy trên máy - nơi bạn ra lệnh cắt video |
-| **Node.js** | v24.15.0 (LTS) | Phần nền để Claude Code chạy được |
-| **Git** | 2.54.0 | Trợ lý cần để ghi nhớ thay đổi file, thiếu là nó không chịu làm |
-| **Chìa khóa ElevenLabs** | - | Bóc lời chuẩn tên riêng + tạo giọng đọc |
-| **Chìa khóa AssemblyAI** | - | Đường bóc lời miễn phí, dùng khi chưa trả phí ElevenLabs |
+| Tài khoản Claude Pro | gói trả phí, khoảng 500.000đ/tháng | Bản miễn phí bị giới hạn dung lượng xử lý trong phiên làm việc dài |
+| Claude Desktop | bản mới nhất | Môi trường thực thi trên máy cục bộ |
+| Node.js | v24.15.0 (LTS) | Nền tảng để Claude Code hoạt động |
+| Git | 2.54.0 | Cơ chế theo dõi thay đổi tệp mà trợ lý yêu cầu |
+| Khóa API ElevenLabs | - | Bóc lời và tổng hợp giọng đọc |
+| Khóa API AssemblyAI | - | Phương án bóc lời miễn phí, dùng khi chưa đăng ký ElevenLabs |
 
-Hướng dẫn đầy đủ: https://sontyphu.github.io/hoc-auto-video/chuan-bi/
-
----
-
-## Bốn món trong gói này
-
-| # | Món | Để làm gì | Bản ghim | Ai cài |
-| --- | --- | --- | --- | --- |
-| 1 | **FFmpeg** (kèm ffprobe) | Phần mềm cắt, ghép, gắn phụ đề thật sự. Trợ lý ra lệnh, FFmpeg làm | 8.1.1 essentials (gyan.dev) | Trợ lý AI |
-| 2 | **uv** | Quản kho phần mềm nền. Bộ công cụ viết bằng Python, uv tự lo phần Python - né lỗi Microsoft Store chặn lệnh `python` trên Windows | 0.11.21 | Trợ lý AI |
-| 3 | **Bộ công cụ video** | Bóc lời có mốc thời gian tới từng từ, cho trợ lý nhìn được khung hình, cắt đúng ranh giới câu | commit `cf12ac3` (14/05/2026) | Trợ lý AI |
-| 4 | **yt-dlp** | Tải video về từ link YouTube, TikTok, Facebook kèm lời thoại | 2026.07.04 | Trợ lý AI |
+Hướng dẫn: https://sontyphu.github.io/hoc-auto-video/chuan-bi/
 
 ---
 
-## Lệnh cài và phép kiểm từng món
+## Thành phần trong gói
 
-### 1. FFmpeg
+| Thành phần | Vai trò | Phiên bản ghim | Người thực hiện |
+| --- | --- | --- | --- |
+| FFmpeg (kèm ffprobe) | Thực thi cắt, ghép, gắn phụ đề. Trợ lý điều phối, FFmpeg xử lý | 8.1.1 essentials (gyan.dev) | Trợ lý AI |
+| uv | Quản lý môi trường Python. Loại bỏ xung đột với cơ chế chặn lệnh `python` của Microsoft Store trên Windows | 0.11.21 | Trợ lý AI |
+| Bộ công cụ video | Bóc lời với mốc thời gian cấp từ, đọc khung hình, cắt theo ranh giới câu | commit `cf12ac3` (14/05/2026) | Trợ lý AI |
+| yt-dlp | Tải video từ liên kết YouTube, TikTok, Facebook | 2026.07.04 | Trợ lý AI |
 
-**Kiểm đã có chưa:** `ffmpeg -version`
+---
 
-**Windows** - dán nguyên khối:
+## Cài đặt và kiểm tra từng thành phần
+
+### FFmpeg
+
+Kiểm tra hiện trạng: `ffmpeg -version`
+
+Windows:
+
 ```powershell
 $dest = "$env:LOCALAPPDATA\ffmpeg"
 $zip = "$env:TEMP\ffmpeg.zip"
@@ -47,31 +51,37 @@ $bin = (Get-ChildItem "$dest\ffmpeg-*\bin" -Directory | Select-Object -First 1).
 [Environment]::SetEnvironmentVariable("PATH", "$([Environment]::GetEnvironmentVariable('PATH','User'));$bin", "User")
 ```
 
-**Mac:** `brew install ffmpeg`
+macOS:
 
-**Đạt khi:** `ffmpeg -version` VÀ `ffprobe -version` đều ra thông tin phiên bản. Hai cái đi cùng nhau, thiếu một là chưa xong.
+```bash
+brew install ffmpeg
+```
 
-*Tải khoảng 90 MB. Cài xong đóng hẳn PowerShell mở lại - máy chỉ nhận phần mềm mới khi cửa sổ mở mới.*
+**Phép kiểm**: `ffmpeg -version` và `ffprobe -version` đều trả về thông tin phiên bản. Hai thành phần đi kèm nhau; thiếu một trong hai là chưa hoàn tất.
 
-### 2. uv
+Dung lượng tải khoảng 90 MB. Sau khi cài, đóng cửa sổ dòng lệnh và mở lại để hệ thống nạp biến môi trường mới.
 
-**Kiểm đã có chưa:** `uv --version`
+### uv
 
-**Windows:**
+Kiểm tra hiện trạng: `uv --version`
+
+Windows:
+
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-**Mac:**
+macOS:
+
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-**Đạt khi:** `uv --version` ra dòng kiểu `uv 0.11.x`.
+**Phép kiểm**: `uv --version` trả về chuỗi phiên bản dạng `uv 0.11.x`.
 
-### 3. Bộ công cụ video
+### Bộ công cụ video
 
-**Kiểm đã có chưa:** thư mục `~/.claude/skills/video-use/helpers/timeline_view.py` có tồn tại không
+Kiểm tra hiện trạng: tồn tại `~/.claude/skills/video-use/helpers/timeline_view.py`
 
 ```bash
 cd ~
@@ -81,86 +91,86 @@ git checkout cf12ac35143caa48db76efa35b1cb439582333bb
 uv sync
 ```
 
-Rồi **chép đè 10 file tiếng Việt** của thầy Sơn từ `viet-hoa/` vào `video-use/helpers/`, và chép cả thư mục sang `~/.claude/skills/video-use/`.
+Sau đó sao chép mười công cụ trong `viet-hoa/` vào `video-use/helpers/`, và sao chép toàn bộ thư mục sang `~/.claude/skills/video-use/`.
 
-**Đạt khi:** chạy trong thư mục đó `uv run helpers/timeline_view.py --help` ra bảng hướng dẫn (mã trả về 0).
+**Phép kiểm**: chạy `uv run helpers/timeline_view.py --help` trong thư mục đó, mã trả về bằng 0 và in ra bảng tham số.
 
-> ⚠️ **Cài đứt giữa chừng** (mất mạng, bấm Ctrl+C) sẽ để lại thư mục `.venv` hỏng. Chạy lại `uv sync` sẽ báo *"not a valid Python environment"*. Cách xử: xóa thư mục `.venv` rồi chạy `uv sync` lại.
+**Lưu ý**: cài đặt bị gián đoạn để lại thư mục `.venv` không hoàn chỉnh. Lần chạy sau, `uv sync` báo *"not a valid Python environment"*. Xóa thư mục `.venv` và chạy lại.
 
-### 4. yt-dlp
+### yt-dlp
 
-**Kiểm đã có chưa:** `yt-dlp --version`
+Kiểm tra hiện trạng: `yt-dlp --version`
 
 ```bash
 uv tool install yt-dlp
 ```
 
-**Đạt khi:** `yt-dlp --version` ra dòng ngày tháng kiểu `2026.07.04`.
+**Phép kiểm**: `yt-dlp --version` trả về chuỗi ngày tháng dạng `2026.07.04`.
 
-> ⚠️ **KHÔNG dùng `uvx yt-dlp`.** Lệnh đó chỉ chạy tạm một lần, không đặt được vào máy. File `tai_video.py` gọi thẳng lệnh `yt-dlp` nên đòi nó phải nằm sẵn trong máy - thiếu là báo *"Thieu yt-dlp"* rồi dừng.
+**Lưu ý**: không dùng `uvx yt-dlp`. Lệnh đó thực thi trong môi trường tạm và không cài đặt vào hệ thống. Tệp `tai_video.py` gọi lệnh `yt-dlp` trực tiếp qua `shutil.which`, yêu cầu chương trình phải có trong PATH.
 
 ---
 
-## Mười công cụ tiếng Việt của thầy Sơn
+## Mười công cụ bổ sung cho tiếng Việt
 
-Nằm trong thư mục `viet-hoa/`, chép đè vào bộ công cụ sau khi cài. Đây là phần bản gốc **không có** - thầy viết thêm để chạy được với tiếng Việt và với cách dạy của lớp.
+Nằm trong thư mục `viet-hoa/`, sao chép vào bộ công cụ sau khi cài đặt. Đây là phần thư viện gốc không có, do Lê Thanh Sơn phát triển để đáp ứng yêu cầu xử lý tiếng Việt và giáo trình của khóa học.
 
-| File | Làm gì |
+| Tệp | Chức năng |
 | --- | --- |
-| `tim_tu_dem.py` | **Tìm chỗ ậm ừ, ngập ngừng** trong video - nền của bài "cắt bỏ quãng chết" buổi 1 |
-| `cat_video.py` | Cắt video theo ranh giới câu, không đứt giữa lời |
-| `chia_clip.py` | Chia video dài thành nhiều clip theo chủ đề |
-| `tai_video.py` | Tải video từ link YouTube, TikTok, Facebook kèm lời thoại |
-| `transcript_hyperframes.py` | Bóc lời bằng ElevenLabs Scribe rồi xuất đúng định dạng bộ chèn hiệu ứng cần - **cầu nối sang Gói Hiệu ứng** |
-| `transcribe_assemblyai.py` | Bóc lời đường miễn phí (AssemblyAI) |
-| `transcribe_groq.py` | Bóc lời đường miễn phí thứ hai (Groq) |
-| `extract_transcript.py` | Rút bản chữ ra để đọc |
-| `kiem_chat_luong.py` | Kiểm chất lượng video thành phẩm |
-| `lam_thumbnail.py` | Chọn khung đẹp nhất trong video rồi làm ảnh bìa |
+| `tim_tu_dem.py` | Xác định vị trí từ đệm và đoạn ngập ngừng - cơ sở của bài loại bỏ quãng chết ở buổi 1 |
+| `cat_video.py` | Cắt theo ranh giới câu, không đứt giữa lời |
+| `chia_clip.py` | Tách video dài thành nhiều đoạn theo chủ đề |
+| `tai_video.py` | Tải video từ liên kết mạng xã hội kèm lời thoại |
+| `transcript_hyperframes.py` | Bóc lời qua ElevenLabs Scribe, xuất theo định dạng bộ chèn hiệu ứng yêu cầu. Là thành phần liên kết sang Gói Hiệu ứng |
+| `transcribe_assemblyai.py` | Bóc lời qua AssemblyAI, phương án miễn phí |
+| `transcribe_groq.py` | Bóc lời qua Groq, phương án miễn phí thứ hai |
+| `extract_transcript.py` | Trích xuất bản chữ để đọc |
+| `kiem_chat_luong.py` | Kiểm tra chất lượng video thành phẩm |
+| `lam_thumbnail.py` | Chọn khung hình đại diện và tạo ảnh bìa |
 
 ---
 
-## Chìa khóa để ở đâu
+## Cấu hình khóa API
 
-File `.env` trong `~/.claude/skills/video-use/`, nội dung một dòng:
+Tệp `.env` đặt tại `~/.claude/skills/video-use/`, nội dung:
 
 ```
-ELEVENLABS_API_KEY=chuỗi-mã-của-bạn
+ELEVENLABS_API_KEY=<chuỗi khóa>
 ```
 
-Muốn dùng thêm đường miễn phí thì thêm dòng `ASSEMBLYAI_API_KEY=...`.
+Thêm dòng `ASSEMBLYAI_API_KEY=<chuỗi khóa>` nếu dùng phương án bóc lời miễn phí.
 
-**Lệnh ghi file này - Windows** (thay `DAN_KEY_VAO_DAY` bằng chuỗi của bạn):
+Lệnh ghi tệp trên Windows:
 
 ```powershell
-[IO.File]::WriteAllText("$env:USERPROFILE\.claude\skills\video-use\.env", "ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY")
+[IO.File]::WriteAllText("$env:USERPROFILE\.claude\skills\video-use\.env", "ELEVENLABS_API_KEY=<chuỗi khóa>")
 ```
 
-**Mac:**
+macOS:
 
 ```bash
-echo "ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY" > ~/.claude/skills/video-use/.env
+echo "ELEVENLABS_API_KEY=<chuỗi khóa>" > ~/.claude/skills/video-use/.env
 ```
 
-> ⚠️ **Đừng dùng `Out-File -Encoding utf8` hay `Set-Content -Encoding utf8`.** Hai lệnh này của PowerShell chèn 3 byte vô hình vào đầu file, làm tên biến thành `<vô hình>ELEVENLABS_API_KEY` - bộ công cụ so không khớp nên báo **không tìm thấy chìa khóa** dù file có đủ chữ, nhìn mắt thường không thấy sai chỗ nào. Đã gặp thật 08/08/2026.
->
-> Lỡ dùng nhầm rồi thì chạy lại bộ cài, nó tự vá.
+**Yêu cầu định dạng**: tệp phải là UTF-8 không có BOM.
 
-⚠️ **Không gửi chuỗi này cho ai, không chụp màn hình đưa lên nhóm.** Ai có nó là tiêu tiền được trong tài khoản bạn.
+Trên Windows, `Out-File -Encoding utf8` và `Set-Content -Encoding utf8` chèn ba byte đánh dấu vào đầu tệp. Tên biến khi đó trở thành `<BOM>ELEVENLABS_API_KEY` và không khớp với chuỗi so sánh trong thư viện, dẫn đến báo lỗi *không tìm thấy khóa* trong khi nội dung tệp nhìn bằng mắt hoàn toàn đúng. Ghi nhận ngày 08/08/2026. Trường hợp đã ghi nhầm, chạy lại bộ cài để tự khắc phục.
+
+**Bảo mật**: không chia sẻ chuỗi khóa, không đăng ảnh chụp màn hình chứa khóa. Người nắm giữ khóa có thể phát sinh chi phí trên tài khoản của bạn.
 
 ---
 
-## Bốn thứ KHÔNG cài - để khỏi băn khoăn
+## Thành phần không thuộc phạm vi cài đặt
 
-| Món | Vì sao không |
+| Thành phần | Lý do loại trừ |
 | --- | --- |
-| **Whisper** | Nó tự làm mượt, **xóa mất tiếng ậm ừ** - đúng thứ buổi 1 cần tìm để cắt. Model gốc lại là model tiếng Anh, đọc tiếng Việt sai bét |
-| **Python** | `uv` tự lo bản riêng. Cài Python thẳng trên Windows hay bị Microsoft Store chặn, tự sửa rất rối |
-| **Manim** | Vẽ sơ đồ toán học - lớp không dùng |
-| **Remotion** | Một cách dựng video khác - lớp đi đường Gói Hiệu ứng |
+| Whisper | Mô hình chuẩn hóa từ đệm, làm mất chính dữ liệu mà bài loại bỏ quãng chết cần xử lý. Mô hình mặc định là mô hình tiếng Anh, độ chính xác với tiếng Việt không đạt yêu cầu |
+| Python cài trực tiếp | uv quản lý phiên bản riêng. Cài trực tiếp trên Windows thường xung đột với cơ chế chuyển hướng của Microsoft Store |
+| Manim | Thư viện dựng sơ đồ toán học, không nằm trong giáo trình |
+| Remotion | Khung dựng video thay thế; giáo trình sử dụng phương án khác ở Gói Hiệu ứng |
 
 ---
 
 ## Gói tiếp theo
 
-Xong gói này là đủ cho **buổi 1 và buổi 2**. Trước buổi 3 cài thêm **Gói Hiệu ứng**: https://github.com/sontyphu/autovideo-effects
+Gói này đáp ứng buổi 1 và buổi 2. Trước buổi 3, cài Gói Hiệu ứng: https://github.com/sontyphu/autovideo-effects
