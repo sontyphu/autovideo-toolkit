@@ -77,6 +77,16 @@ Xong phần cài, kiểm lại chìa khóa. Chưa có thì hướng dẫn học 
 
 Học viên đưa chuỗi → bạn ghi vào `~/.claude/skills/video-use/.env` giúp họ (ghi file thì được, còn đi lấy chuỗi thì không).
 
+> ⚠️ **Ghi file này phải KHÔNG có BOM.** Trên Windows đừng dùng `Out-File -Encoding utf8` hay `Set-Content -Encoding utf8` - PowerShell 5.1 chèn 3 byte vô hình vào đầu file, làm tên biến thành `<BOM>ELEVENLABS_API_KEY`, bộ công cụ so không khớp nên báo **không tìm thấy chìa khóa** dù file nhìn mắt thường vẫn đúng. Đã gặp thật 08/08/2026.
+>
+> Dùng lệnh này thay thế:
+> ```powershell
+> [IO.File]::WriteAllText("$env:USERPROFILE\.claude\skills\video-use\.env", "ELEVENLABS_API_KEY=chuoi-cua-ho")
+> ```
+> Mac thì `echo "..." > ~/.claude/skills/video-use/.env` là sạch, không cần lo.
+>
+> **Học viên báo "không tìm thấy chìa khóa" mà file .env có đủ chữ** → gần như chắc chắn là lỗi BOM này. Kiểm 3 byte đầu file, thấy `EF BB BF` thì ghi lại file bằng lệnh trên.
+
 Rồi **kiểm lại toàn bộ một lượt** và báo kết quả cuối:
 
 ```

@@ -130,6 +130,22 @@ ELEVENLABS_API_KEY=chuỗi-mã-của-bạn
 
 Muốn dùng thêm đường miễn phí thì thêm dòng `ASSEMBLYAI_API_KEY=...`.
 
+**Lệnh ghi file này - Windows** (thay `DAN_KEY_VAO_DAY` bằng chuỗi của bạn):
+
+```powershell
+[IO.File]::WriteAllText("$env:USERPROFILE\.claude\skills\video-use\.env", "ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY")
+```
+
+**Mac:**
+
+```bash
+echo "ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY" > ~/.claude/skills/video-use/.env
+```
+
+> ⚠️ **Đừng dùng `Out-File -Encoding utf8` hay `Set-Content -Encoding utf8`.** Hai lệnh này của PowerShell chèn 3 byte vô hình vào đầu file, làm tên biến thành `<vô hình>ELEVENLABS_API_KEY` - bộ công cụ so không khớp nên báo **không tìm thấy chìa khóa** dù file có đủ chữ, nhìn mắt thường không thấy sai chỗ nào. Đã gặp thật 08/08/2026.
+>
+> Lỡ dùng nhầm rồi thì chạy lại bộ cài, nó tự vá.
+
 ⚠️ **Không gửi chuỗi này cho ai, không chụp màn hình đưa lên nhóm.** Ai có nó là tiêu tiền được trong tài khoản bạn.
 
 ---

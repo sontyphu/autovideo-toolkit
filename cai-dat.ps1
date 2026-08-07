@@ -24,6 +24,16 @@ function Chay-Ngoai {
     finally { $ErrorActionPreference = $cu }
 }
 
+# Ghi file .env KHONG CO BOM.
+# `Set-Content -Encoding utf8` va `Out-File -Encoding utf8` cua PowerShell 5.1 chen
+# 3 byte vo hinh vao dau file -> ten bien thanh "<BOM>ELEVENLABS_API_KEY", bo cong cu
+# so sanh khong khop nen bao KHONG TIM THAY CHIA KHOA. Da gap that 08/08/2026.
+function Ghi-Env {
+    param([string]$DuongDan, [string]$NoiDung)
+    $NoiDung = $NoiDung -replace "^﻿", ""
+    [System.IO.File]::WriteAllText($DuongDan, $NoiDung, (New-Object System.Text.UTF8Encoding $false))
+}
+
 function Tieu-De($chu) { Write-Host "`n=== $chu ===" -ForegroundColor Cyan }
 function Dat($chu)     { Write-Host "  [DAT] $chu" -ForegroundColor Green }
 function Thieu($chu)   { Write-Host "  [THIEU] $chu" -ForegroundColor Yellow }
@@ -165,7 +175,7 @@ Copy-Item $DICH $SKILL -Recurse -Force
 Dat "Da nap vao: $SKILL"
 
 if ($giuEnv) {
-    Set-Content -Path (Join-Path $SKILL ".env") -Value $giuEnv -Encoding utf8 -NoNewline
+    Ghi-Env (Join-Path $SKILL ".env") $giuEnv
     Dat "Giu nguyen chia khoa da co - khong phai nhap lai"
 }
 
@@ -177,6 +187,16 @@ if (Test-Path $SKILL_CU) {
 
 # ------------------------------------------------- Kiem tra
 Tieu-De "Kiem tra"
+
+# Va file .env cu bi dinh BOM tu dot cai truoc (hoac tu lenh Out-File trong tai lieu cu)
+$envHienCo = Join-Path $SKILL ".env"
+if (Test-Path $envHienCo) {
+    $byte = [System.IO.File]::ReadAllBytes($envHienCo)
+    if ($byte.Length -ge 3 -and $byte[0] -eq 0xEF -and $byte[1] -eq 0xBB -and $byte[2] -eq 0xBF) {
+        Ghi-Env $envHienCo ([System.Text.Encoding]::UTF8.GetString($byte, 3, $byte.Length - 3))
+        Dat "Da va file chia khoa bi loi dinh ky tu vo hinh"
+    }
+}
 
 $diem = 0
 if (Co-Lenh ffmpeg)  { Dat "Cat ghep video (ffmpeg)"; $diem++ }        else { Thieu "ffmpeg" }
@@ -196,7 +216,7 @@ if (-not (Test-Path (Join-Path $SKILL ".env"))) {
     Write-Host "  2. Bam tao key moi, BAT TAT CA QUYEN (thieu quyen la lat nua tao giong doc bao loi)"
     Write-Host "  3. Chay lenh duoi, thay DAN_KEY_VAO_DAY bang chuoi vua copy:"
     Write-Host ""
-    Write-Host "     `"ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY`" | Out-File -FilePath `"$SKILL\.env`" -Encoding utf8 -NoNewline" -ForegroundColor Cyan
+    Write-Host "     [IO.File]::WriteAllText(`"$SKILL\.env`", `"ELEVENLABS_API_KEY=DAN_KEY_VAO_DAY`")" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "  KHONG gui chuoi nay cho ai, khong chup man hinh dua len nhom." -ForegroundColor Yellow
 }
