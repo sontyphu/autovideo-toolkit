@@ -247,3 +247,7 @@ Write-Host ""
 Write-Host "  Truoc buoi 3 cai them Goi Hieu ung:" -ForegroundColor DarkGray
 Write-Host "  https://github.com/sontyphu/autovideo-effects" -ForegroundColor DarkGray
 Write-Host ""
+
+# robocopy tra ma 1-7 khi thanh cong, PowerShell hien "Exit code 3" lam hoc vien
+# tuong hong. Dat lai ve 0 cho khoi hieu nham.
+$global:LASTEXITCODE = 0
